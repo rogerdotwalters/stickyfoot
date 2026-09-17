@@ -1,0 +1,35 @@
+{
+  "format": "stickyfoot.collision",
+  "version": 1,
+  "id": "fern_hollow_01",
+  "width": 1024,
+  "height": 576,
+  "entry": {
+    "x": 96,
+    "y": 408
+  },
+  "boxes": [
+    {
+      "x": 0,
+      "y": 448,
+      "w": 192,
+      "h": 128,
+      "type": "platform"
+    },
+    {
+      "x": 320,
+      "y": 448,
+      "w": 320,
+      "h": 128,
+      "type": "platform"
+    },
+    {
+      "x": 832,
+      "y": 384,
+      "w": 192,
+      "h": 192,
+      "type": "platform"
+    }
+  ],
+  "name": "Fern Hollow 1"
+}

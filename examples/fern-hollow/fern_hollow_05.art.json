@@ -1,0 +1,111 @@
+{
+  "format": "stickyfoot.art",
+  "version": 1,
+  "id": "fern_hollow_05",
+  "width": 1024,
+  "height": 576,
+  "layers": [
+    {
+      "name": "background",
+      "z": 0,
+      "pieces": [
+        {
+          "sprite": "fern",
+          "x": 64,
+          "y": 384,
+          "w": 64,
+          "h": 64
+        },
+        {
+          "sprite": "mushroom",
+          "x": 448,
+          "y": 384,
+          "w": 64,
+          "h": 64
+        },
+        {
+          "sprite": "canopy",
+          "x": 576,
+          "y": 192,
+          "w": 192,
+          "h": 64
+        },
+        {
+          "sprite": "mushroom",
+          "x": 896,
+          "y": 384,
+          "w": 64,
+          "h": 64
+        },
+        {
+          "sprite": "cloud",
+          "x": 212,
+          "y": 124,
+          "w": 128,
+          "h": 64
+        },
+        {
+          "sprite": "cloud",
+          "x": 723,
+          "y": 51,
+          "w": 128,
+          "h": 64
+        },
+        {
+          "sprite": "cloud",
+          "x": 682,
+          "y": 144,
+          "w": 128,
+          "h": 64
+        },
+        {
+          "sprite": "vine",
+          "x": 672,
+          "y": 0,
+          "w": 64,
+          "h": 128
+        }
+      ]
+    },
+    {
+      "name": "midground",
+      "z": 1,
+      "pieces": [
+        {
+          "sprite": "stone",
+          "x": 64,
+          "y": 448,
+          "w": 192,
+          "h": 128
+        },
+        {
+          "sprite": "stone",
+          "x": 448,
+          "y": 448,
+          "w": 128,
+          "h": 128
+        },
+        {
+          "sprite": "trunk",
+          "x": 640,
+          "y": 256,
+          "w": 64,
+          "h": 192
+        },
+        {
+          "sprite": "stone",
+          "x": 768,
+          "y": 448,
+          "w": 256,
+          "h": 64
+        }
+      ]
+    },
+    {
+      "name": "foreground",
+      "z": 2,
+      "pieces": []
+    }
+  ],
+  "name": "Fern Hollow 5"
+}

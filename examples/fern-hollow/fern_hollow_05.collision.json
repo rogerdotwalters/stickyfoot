@@ -1,0 +1,42 @@
+{
+  "format": "stickyfoot.collision",
+  "version": 1,
+  "id": "fern_hollow_05",
+  "width": 1024,
+  "height": 576,
+  "entry": {
+    "x": 96,
+    "y": 408
+  },
+  "boxes": [
+    {
+      "x": 64,
+      "y": 448,
+      "w": 192,
+      "h": 128,
+      "type": "platform"
+    },
+    {
+      "x": 448,
+      "y": 448,
+      "w": 128,
+      "h": 128,
+      "type": "platform"
+    },
+    {
+      "x": 640,
+      "y": 256,
+      "w": 64,
+      "h": 192,
+      "type": "cling"
+    },
+    {
+      "x": 768,
+      "y": 448,
+      "w": 256,
+      "h": 64,
+      "type": "platform"
+    }
+  ],
+  "name": "Fern Hollow 5"
+}

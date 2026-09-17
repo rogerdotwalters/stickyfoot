@@ -1,0 +1,35 @@
+{
+  "format": "stickyfoot.collision",
+  "version": 1,
+  "id": "fern_hollow_03",
+  "width": 1024,
+  "height": 576,
+  "entry": {
+    "x": 96,
+    "y": 280
+  },
+  "boxes": [
+    {
+      "x": 64,
+      "y": 320,
+      "w": 192,
+      "h": 256,
+      "type": "platform"
+    },
+    {
+      "x": 448,
+      "y": 320,
+      "w": 256,
+      "h": 64,
+      "type": "platform"
+    },
+    {
+      "x": 768,
+      "y": 128,
+      "w": 64,
+      "h": 192,
+      "type": "cling"
+    }
+  ],
+  "name": "Fern Hollow 3"
+}

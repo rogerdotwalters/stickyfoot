@@ -1,0 +1,772 @@
+{
+  "format": "stickyfoot.map",
+  "version": 1,
+  "id": "map_fern_hollow",
+  "name": "Fern Hollow (example)",
+  "width": 1024,
+  "height": 576,
+  "nodes": [
+    {
+      "collision": {
+        "format": "stickyfoot.collision",
+        "version": 1,
+        "id": "fern_hollow_01",
+        "width": 1024,
+        "height": 576,
+        "entry": {
+          "x": 96,
+          "y": 408
+        },
+        "boxes": [
+          {
+            "x": 0,
+            "y": 448,
+            "w": 192,
+            "h": 128,
+            "type": "platform"
+          },
+          {
+            "x": 320,
+            "y": 448,
+            "w": 320,
+            "h": 128,
+            "type": "platform"
+          },
+          {
+            "x": 832,
+            "y": 384,
+            "w": 192,
+            "h": 192,
+            "type": "platform"
+          }
+        ],
+        "name": "Fern Hollow 1"
+      },
+      "art": {
+        "format": "stickyfoot.art",
+        "version": 1,
+        "id": "fern_hollow_01",
+        "width": 1024,
+        "height": 576,
+        "layers": [
+          {
+            "name": "background",
+            "z": 0,
+            "pieces": [
+              {
+                "sprite": "rock",
+                "x": 512,
+                "y": 384,
+                "w": 64,
+                "h": 64
+              },
+              {
+                "sprite": "sign",
+                "x": 896,
+                "y": 320,
+                "w": 64,
+                "h": 64
+              },
+              {
+                "sprite": "cloud",
+                "x": 405,
+                "y": 60,
+                "w": 128,
+                "h": 64
+              },
+              {
+                "sprite": "cloud",
+                "x": 109,
+                "y": 61,
+                "w": 128,
+                "h": 64
+              },
+              {
+                "sprite": "cloud",
+                "x": 777,
+                "y": 105,
+                "w": 128,
+                "h": 64
+              },
+              {
+                "sprite": "cloud",
+                "x": 307,
+                "y": 49,
+                "w": 128,
+                "h": 64
+              }
+            ]
+          },
+          {
+            "name": "midground",
+            "z": 1,
+            "pieces": [
+              {
+                "sprite": "stone",
+                "x": 0,
+                "y": 448,
+                "w": 192,
+                "h": 128
+              },
+              {
+                "sprite": "stone",
+                "x": 320,
+                "y": 448,
+                "w": 320,
+                "h": 128
+              },
+              {
+                "sprite": "stone",
+                "x": 832,
+                "y": 384,
+                "w": 192,
+                "h": 192
+              }
+            ]
+          },
+          {
+            "name": "foreground",
+            "z": 2,
+            "pieces": []
+          }
+        ],
+        "name": "Fern Hollow 1"
+      }
+    },
+    {
+      "collision": {
+        "format": "stickyfoot.collision",
+        "version": 1,
+        "id": "fern_hollow_02",
+        "width": 1024,
+        "height": 576,
+        "entry": {
+          "x": 96,
+          "y": 408
+        },
+        "boxes": [
+          {
+            "x": 0,
+            "y": 448,
+            "w": 192,
+            "h": 128,
+            "type": "platform"
+          },
+          {
+            "x": 384,
+            "y": 320,
+            "w": 192,
+            "h": 64,
+            "type": "platform"
+          },
+          {
+            "x": 640,
+            "y": 192,
+            "w": 64,
+            "h": 192,
+            "type": "cling"
+          },
+          {
+            "x": 704,
+            "y": 320,
+            "w": 256,
+            "h": 64,
+            "type": "platform"
+          }
+        ],
+        "name": "Fern Hollow 2"
+      },
+      "art": {
+        "format": "stickyfoot.art",
+        "version": 1,
+        "id": "fern_hollow_02",
+        "width": 1024,
+        "height": 576,
+        "layers": [
+          {
+            "name": "background",
+            "z": 0,
+            "pieces": [
+              {
+                "sprite": "moss",
+                "x": 384,
+                "y": 256,
+                "w": 128,
+                "h": 64
+              },
+              {
+                "sprite": "canopy",
+                "x": 576,
+                "y": 128,
+                "w": 192,
+                "h": 64
+              },
+              {
+                "sprite": "lantern",
+                "x": 768,
+                "y": 256,
+                "w": 64,
+                "h": 64
+              },
+              {
+                "sprite": "cloud",
+                "x": 724,
+                "y": 53,
+                "w": 128,
+                "h": 64
+              },
+              {
+                "sprite": "cloud",
+                "x": 868,
+                "y": 60,
+                "w": 128,
+                "h": 64
+              },
+              {
+                "sprite": "cloud",
+                "x": 705,
+                "y": 92,
+                "w": 128,
+                "h": 64
+              },
+              {
+                "sprite": "cloud",
+                "x": 285,
+                "y": 67,
+                "w": 128,
+                "h": 64
+              },
+              {
+                "sprite": "vine",
+                "x": 2,
+                "y": 0,
+                "w": 64,
+                "h": 128
+              }
+            ]
+          },
+          {
+            "name": "midground",
+            "z": 1,
+            "pieces": [
+              {
+                "sprite": "dirt",
+                "x": 0,
+                "y": 448,
+                "w": 192,
+                "h": 128
+              },
+              {
+                "sprite": "dirt",
+                "x": 384,
+                "y": 320,
+                "w": 192,
+                "h": 64
+              },
+              {
+                "sprite": "trunk",
+                "x": 640,
+                "y": 192,
+                "w": 64,
+                "h": 192
+              },
+              {
+                "sprite": "dirt",
+                "x": 704,
+                "y": 320,
+                "w": 256,
+                "h": 64
+              }
+            ]
+          },
+          {
+            "name": "foreground",
+            "z": 2,
+            "pieces": []
+          }
+        ],
+        "name": "Fern Hollow 2"
+      }
+    },
+    {
+      "collision": {
+        "format": "stickyfoot.collision",
+        "version": 1,
+        "id": "fern_hollow_03",
+        "width": 1024,
+        "height": 576,
+        "entry": {
+          "x": 96,
+          "y": 280
+        },
+        "boxes": [
+          {
+            "x": 64,
+            "y": 320,
+            "w": 192,
+            "h": 256,
+            "type": "platform"
+          },
+          {
+            "x": 448,
+            "y": 320,
+            "w": 256,
+            "h": 64,
+            "type": "platform"
+          },
+          {
+            "x": 768,
+            "y": 128,
+            "w": 64,
+            "h": 192,
+            "type": "cling"
+          }
+        ],
+        "name": "Fern Hollow 3"
+      },
+      "art": {
+        "format": "stickyfoot.art",
+        "version": 1,
+        "id": "fern_hollow_03",
+        "width": 1024,
+        "height": 576,
+        "layers": [
+          {
+            "name": "background",
+            "z": 0,
+            "pieces": [
+              {
+                "sprite": "sign",
+                "x": 128,
+                "y": 256,
+                "w": 64,
+                "h": 64
+              },
+              {
+                "sprite": "mushroom",
+                "x": 576,
+                "y": 256,
+                "w": 64,
+                "h": 64
+              },
+              {
+                "sprite": "canopy",
+                "x": 704,
+                "y": 64,
+                "w": 192,
+                "h": 64
+              },
+              {
+                "sprite": "cloud",
+                "x": 195,
+                "y": 164,
+                "w": 128,
+                "h": 64
+              },
+              {
+                "sprite": "cloud",
+                "x": 680,
+                "y": 107,
+                "w": 128,
+                "h": 64
+              }
+            ]
+          },
+          {
+            "name": "midground",
+            "z": 1,
+            "pieces": [
+              {
+                "sprite": "dirt",
+                "x": 64,
+                "y": 320,
+                "w": 192,
+                "h": 256
+              },
+              {
+                "sprite": "dirt",
+                "x": 448,
+                "y": 320,
+                "w": 256,
+                "h": 64
+              },
+              {
+                "sprite": "trunk",
+                "x": 768,
+                "y": 128,
+                "w": 64,
+                "h": 192
+              }
+            ]
+          },
+          {
+            "name": "foreground",
+            "z": 2,
+            "pieces": []
+          }
+        ],
+        "name": "Fern Hollow 3"
+      }
+    },
+    {
+      "collision": {
+        "format": "stickyfoot.collision",
+        "version": 1,
+        "id": "fern_hollow_04",
+        "width": 1024,
+        "height": 576,
+        "entry": {
+          "x": 96,
+          "y": 280
+        },
+        "boxes": [
+          {
+            "x": 64,
+            "y": 320,
+            "w": 192,
+            "h": 256,
+            "type": "platform"
+          },
+          {
+            "x": 512,
+            "y": 320,
+            "w": 192,
+            "h": 256,
+            "type": "platform"
+          }
+        ],
+        "name": "Fern Hollow 4"
+      },
+      "art": {
+        "format": "stickyfoot.art",
+        "version": 1,
+        "id": "fern_hollow_04",
+        "width": 1024,
+        "height": 576,
+        "layers": [
+          {
+            "name": "background",
+            "z": 0,
+            "pieces": [
+              {
+                "sprite": "mushroom",
+                "x": 576,
+                "y": 256,
+                "w": 64,
+                "h": 64
+              },
+              {
+                "sprite": "cloud",
+                "x": 838,
+                "y": 128,
+                "w": 128,
+                "h": 64
+              },
+              {
+                "sprite": "cloud",
+                "x": 460,
+                "y": 120,
+                "w": 128,
+                "h": 64
+              },
+              {
+                "sprite": "cloud",
+                "x": 805,
+                "y": 178,
+                "w": 128,
+                "h": 64
+              }
+            ]
+          },
+          {
+            "name": "midground",
+            "z": 1,
+            "pieces": [
+              {
+                "sprite": "dirt",
+                "x": 64,
+                "y": 320,
+                "w": 192,
+                "h": 256
+              },
+              {
+                "sprite": "dirt",
+                "x": 512,
+                "y": 320,
+                "w": 192,
+                "h": 256
+              }
+            ]
+          },
+          {
+            "name": "foreground",
+            "z": 2,
+            "pieces": []
+          }
+        ],
+        "name": "Fern Hollow 4"
+      }
+    },
+    {
+      "collision": {
+        "format": "stickyfoot.collision",
+        "version": 1,
+        "id": "fern_hollow_05",
+        "width": 1024,
+        "height": 576,
+        "entry": {
+          "x": 96,
+          "y": 408
+        },
+        "boxes": [
+          {
+            "x": 64,
+            "y": 448,
+            "w": 192,
+            "h": 128,
+            "type": "platform"
+          },
+          {
+            "x": 448,
+            "y": 448,
+            "w": 128,
+            "h": 128,
+            "type": "platform"
+          },
+          {
+            "x": 640,
+            "y": 256,
+            "w": 64,
+            "h": 192,
+            "type": "cling"
+          },
+          {
+            "x": 768,
+            "y": 448,
+            "w": 256,
+            "h": 64,
+            "type": "platform"
+          }
+        ],
+        "name": "Fern Hollow 5"
+      },
+      "art": {
+        "format": "stickyfoot.art",
+        "version": 1,
+        "id": "fern_hollow_05",
+        "width": 1024,
+        "height": 576,
+        "layers": [
+          {
+            "name": "background",
+            "z": 0,
+            "pieces": [
+              {
+                "sprite": "fern",
+                "x": 64,
+                "y": 384,
+                "w": 64,
+                "h": 64
+              },
+              {
+                "sprite": "mushroom",
+                "x": 448,
+                "y": 384,
+                "w": 64,
+                "h": 64
+              },
+              {
+                "sprite": "canopy",
+                "x": 576,
+                "y": 192,
+                "w": 192,
+                "h": 64
+              },
+              {
+                "sprite": "mushroom",
+                "x": 896,
+                "y": 384,
+                "w": 64,
+                "h": 64
+              },
+              {
+                "sprite": "cloud",
+                "x": 212,
+                "y": 124,
+                "w": 128,
+                "h": 64
+              },
+              {
+                "sprite": "cloud",
+                "x": 723,
+                "y": 51,
+                "w": 128,
+                "h": 64
+              },
+              {
+                "sprite": "cloud",
+                "x": 682,
+                "y": 144,
+                "w": 128,
+                "h": 64
+              },
+              {
+                "sprite": "vine",
+                "x": 672,
+                "y": 0,
+                "w": 64,
+                "h": 128
+              }
+            ]
+          },
+          {
+            "name": "midground",
+            "z": 1,
+            "pieces": [
+              {
+                "sprite": "stone",
+                "x": 64,
+                "y": 448,
+                "w": 192,
+                "h": 128
+              },
+              {
+                "sprite": "stone",
+                "x": 448,
+                "y": 448,
+                "w": 128,
+                "h": 128
+              },
+              {
+                "sprite": "trunk",
+                "x": 640,
+                "y": 256,
+                "w": 64,
+                "h": 192
+              },
+              {
+                "sprite": "stone",
+                "x": 768,
+                "y": 448,
+                "w": 256,
+                "h": 64
+              }
+            ]
+          },
+          {
+            "name": "foreground",
+            "z": 2,
+            "pieces": []
+          }
+        ],
+        "name": "Fern Hollow 5"
+      }
+    },
+    {
+      "collision": {
+        "format": "stickyfoot.collision",
+        "version": 1,
+        "id": "fern_hollow_06",
+        "width": 1024,
+        "height": 576,
+        "entry": {
+          "x": 96,
+          "y": 280
+        },
+        "boxes": [
+          {
+            "x": 0,
+            "y": 320,
+            "w": 192,
+            "h": 256,
+            "type": "platform"
+          },
+          {
+            "x": 384,
+            "y": 320,
+            "w": 320,
+            "h": 64,
+            "type": "platform"
+          }
+        ],
+        "name": "Fern Hollow 6"
+      },
+      "art": {
+        "format": "stickyfoot.art",
+        "version": 1,
+        "id": "fern_hollow_06",
+        "width": 1024,
+        "height": 576,
+        "layers": [
+          {
+            "name": "background",
+            "z": 0,
+            "pieces": [
+              {
+                "sprite": "rock",
+                "x": 0,
+                "y": 256,
+                "w": 64,
+                "h": 64
+              },
+              {
+                "sprite": "rock",
+                "x": 448,
+                "y": 256,
+                "w": 64,
+                "h": 64
+              },
+              {
+                "sprite": "cloud",
+                "x": 294,
+                "y": 107,
+                "w": 128,
+                "h": 64
+              },
+              {
+                "sprite": "cloud",
+                "x": 183,
+                "y": 134,
+                "w": 128,
+                "h": 64
+              },
+              {
+                "sprite": "vine",
+                "x": 167,
+                "y": 0,
+                "w": 64,
+                "h": 128
+              }
+            ]
+          },
+          {
+            "name": "midground",
+            "z": 1,
+            "pieces": [
+              {
+                "sprite": "plank",
+                "x": 0,
+                "y": 320,
+                "w": 192,
+                "h": 256
+              },
+              {
+                "sprite": "plank",
+                "x": 384,
+                "y": 320,
+                "w": 320,
+                "h": 64
+              }
+            ]
+          },
+          {
+            "name": "foreground",
+            "z": 2,
+            "pieces": []
+          }
+        ],
+        "name": "Fern Hollow 6"
+      }
+    }
+  ]
+}

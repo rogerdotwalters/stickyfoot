@@ -1,0 +1,90 @@
+{
+  "format": "stickyfoot.art",
+  "version": 1,
+  "id": "fern_hollow_01",
+  "width": 1024,
+  "height": 576,
+  "layers": [
+    {
+      "name": "background",
+      "z": 0,
+      "pieces": [
+        {
+          "sprite": "rock",
+          "x": 512,
+          "y": 384,
+          "w": 64,
+          "h": 64
+        },
+        {
+          "sprite": "sign",
+          "x": 896,
+          "y": 320,
+          "w": 64,
+          "h": 64
+        },
+        {
+          "sprite": "cloud",
+          "x": 405,
+          "y": 60,
+          "w": 128,
+          "h": 64
+        },
+        {
+          "sprite": "cloud",
+          "x": 109,
+          "y": 61,
+          "w": 128,
+          "h": 64
+        },
+        {
+          "sprite": "cloud",
+          "x": 777,
+          "y": 105,
+          "w": 128,
+          "h": 64
+        },
+        {
+          "sprite": "cloud",
+          "x": 307,
+          "y": 49,
+          "w": 128,
+          "h": 64
+        }
+      ]
+    },
+    {
+      "name": "midground",
+      "z": 1,
+      "pieces": [
+        {
+          "sprite": "stone",
+          "x": 0,
+          "y": 448,
+          "w": 192,
+          "h": 128
+        },
+        {
+          "sprite": "stone",
+          "x": 320,
+          "y": 448,
+          "w": 320,
+          "h": 128
+        },
+        {
+          "sprite": "stone",
+          "x": 832,
+          "y": 384,
+          "w": 192,
+          "h": 192
+        }
+      ]
+    },
+    {
+      "name": "foreground",
+      "z": 2,
+      "pieces": []
+    }
+  ],
+  "name": "Fern Hollow 1"
+}

@@ -1,0 +1,108 @@
+{
+  "_readme": [
+    "Every tunable number in Stickyfoot. Edit this file, then run `python3 build.py`,",
+    "which regenerates js/core/settings.js and the single-file build from it.",
+    "",
+    "When the game is served over http(s) it also re-reads this file at boot and",
+    "applies it live, so during development a reload is enough — no rebuild needed.",
+    "Values under `world` are the exception: they are baked into the segment file",
+    "format and only take effect after a rebuild.",
+    "",
+    "Keys beginning with an underscore are notes and are ignored by the game."
+  ],
+
+  "world": {
+    "_note": "Changing these changes the segment file format. Existing .collision.json / .art.json files declare their own width and height and are refused if they do not match.",
+    "nodeWidth": 1024,
+    "nodeHeight": 576,
+    "tile": 64,
+    "artPixel": 4
+  },
+
+  "physics": {
+    "_note": "One tick is 1/60s. gravity and speeds are world pixels per tick.",
+    "gravity": 0.62,
+    "maxLaunchSpeed": 23,
+    "maxDragPixels": 190,
+    "airDrag": 0.9994,
+    "geckoWidth": 46,
+    "geckoHeight": 30
+  },
+
+  "aim": {
+    "_note": "The dotted trajectory preview shortens as the run goes on.",
+    "previewSteps": 80,
+    "previewFalloffPerLedge": 3,
+    "minPreviewSteps": 16
+  },
+
+  "camera": {
+    "_note": "leadX is where the gecko sits horizontally once it is moving; startLeadX holds it centred until the first launch. height is where it sits vertically when the camera follows it up and down.",
+    "leadX": 340,
+    "startLeadX": 512,
+    "ease": 0.1,
+    "maxLeadX": 880,
+
+    "followVertical": true,
+    "height": 320,
+    "verticalEase": 0.08,
+    "deadzone": 80,
+    "minY": -240,
+    "maxY": 180,
+
+    "creepBase": 0.35,
+    "creepPerLedge": 0.035,
+    "creepMax": 1.45
+  },
+
+  "scoring": {
+    "perLedge": 25,
+    "perTile": 1
+  },
+
+  "food": {
+    "_note": "weights are the points each token is worth. Add a kind here, draw assets/sprites/food_<kind>.png, list it in js/art/manifest.js, and it appears in the editor palette.",
+    "weights": {
+      "fly": 10,
+      "moth": 25,
+      "cricket": 50,
+      "grub": 100
+    },
+    "defaultWeight": 10,
+    "bobAmplitude": 5,
+    "bobSpeed": 0.07,
+    "spawnChance": 0.6,
+    "clusterMax": 3
+  },
+
+  "enemies": {
+    "_note": "Back-and-forth patrollers. They never chase; they walk the ledge they are standing on until they reach an edge, then turn around. Touching one ends the run. Each kind needs assets/sprites/enemy_<kind>.png listed in js/art/manifest.js.",
+    "kinds": {
+      "spider": { "speed": 1.1 },
+      "beetle": { "speed": 0.65 }
+    },
+    "defaultSpeed": 0.8,
+    "spawnChance": 0.4,
+    "minLedgeTiles": 3
+  },
+
+  "biomes": {
+    "_note": "Which biome generated nodes use. Authored slides carry their own in the art file. Ids come from js/art/biomes.js plus any you make in the editor.",
+    "rotate": true,
+    "nodesPerBiome": 8,
+    "order": ["grove", "snow"]
+  },
+
+  "difficulty": {
+    "_note": "Gap sizes in world pixels, interpolated from easy to hard over rampNodes nodes.",
+    "gapMinEasy": 120,
+    "gapMinHard": 250,
+    "gapMaxEasy": 230,
+    "gapMaxHard": 420,
+    "rampNodes": 40
+  },
+
+  "cabinet": {
+    "scoreEntrySeconds": 90
+  }
+}

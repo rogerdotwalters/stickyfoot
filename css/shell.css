@@ -1,0 +1,29 @@
+/* ---------- cabinet shell ---------- */
+.cabinet{max-width:1120px;margin:0 auto;padding:10px 12px 28px;min-height:100svh;display:flex;flex-direction:column;gap:10px}
+.marquee{
+  display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;
+  padding:9px 12px;background:var(--panel);border:2px solid var(--edge);
+  border-bottom-width:4px;
+}
+.logo{display:flex;align-items:baseline;gap:9px;margin-right:auto}
+.logo .name{font-family:Silkscreen,monospace;font-weight:700;font-size:20px;color:var(--lime);text-shadow:2px 2px 0 var(--edge-soft)}
+.logo .tag{font-size:12.5px;color:var(--muted)}
+nav{display:flex;flex-wrap:wrap;gap:6px}
+.nav-btn{
+  background:var(--panel-2);border:2px solid var(--edge);border-bottom-width:3px;
+  padding:6px 11px;font-family:Silkscreen,monospace;font-size:12px;cursor:pointer;
+}
+.nav-btn:hover{background:var(--edge-soft)}
+.nav-btn[aria-current="page"]{background:var(--lime);color:var(--ink);border-color:var(--lime)}
+:root:not([data-theme="light"]) .nav-btn[aria-current="page"]{color:#08120c}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .nav-btn[aria-current="page"]{color:#08120c}}
+.player-chip{
+  display:flex;align-items:center;gap:8px;padding:5px 10px;border:2px dashed var(--edge);
+  font-size:13px;cursor:pointer;background:none;
+}
+.player-chip b{font-weight:800}
+.player-chip .none{color:var(--coral)}
+
+/* ---------- screens ---------- */
+.screen{display:none}
+.screen.on{display:block}

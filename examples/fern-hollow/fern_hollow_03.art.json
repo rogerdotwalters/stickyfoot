@@ -4,6 +4,7 @@
   "id": "fern_hollow_03",
   "width": 1024,
   "height": 576,
+  "biome": "grove",
   "layers": [
     {
       "name": "background",
@@ -14,35 +15,55 @@
           "x": 128,
           "y": 256,
           "w": 64,
-          "h": 64
+          "h": 64,
+          "role": "sign"
         },
         {
-          "sprite": "mushroom",
+          "sprite": "sign",
           "x": 576,
           "y": 256,
           "w": 64,
-          "h": 64
-        },
-        {
-          "sprite": "canopy",
-          "x": 704,
-          "y": 64,
-          "w": 192,
-          "h": 64
+          "h": 64,
+          "role": "sign"
         },
         {
           "sprite": "cloud",
-          "x": 195,
-          "y": 164,
+          "x": 185,
+          "y": 81,
           "w": 128,
-          "h": 64
+          "h": 64,
+          "role": "cloud"
         },
         {
           "sprite": "cloud",
-          "x": 680,
-          "y": 107,
+          "x": 24,
+          "y": 76,
           "w": 128,
-          "h": 64
+          "h": 64,
+          "role": "cloud"
+        },
+        {
+          "sprite": "cloud",
+          "x": 19,
+          "y": 166,
+          "w": 128,
+          "h": 64,
+          "role": "cloud"
+        },
+        {
+          "sprite": "cloud",
+          "x": 465,
+          "y": 183,
+          "w": 128,
+          "h": 64,
+          "role": "cloud"
+        },
+        {
+          "sprite": "vine",
+          "x": 426,
+          "y": 0,
+          "w": 64,
+          "h": 128
         }
       ]
     },
@@ -55,21 +76,16 @@
           "x": 64,
           "y": 320,
           "w": 192,
-          "h": 256
+          "h": 256,
+          "role": "block_base"
         },
         {
           "sprite": "dirt",
           "x": 448,
           "y": 320,
-          "w": 256,
-          "h": 64
-        },
-        {
-          "sprite": "trunk",
-          "x": 768,
-          "y": 128,
-          "w": 64,
-          "h": 192
+          "w": 320,
+          "h": 256,
+          "role": "block_base"
         }
       ]
     },

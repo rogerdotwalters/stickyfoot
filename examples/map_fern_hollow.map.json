@@ -27,17 +27,56 @@
           },
           {
             "x": 320,
-            "y": 448,
-            "w": 320,
-            "h": 128,
+            "y": 320,
+            "w": 192,
+            "h": 64,
             "type": "platform"
           },
           {
-            "x": 832,
-            "y": 384,
-            "w": 192,
-            "h": 192,
+            "x": 704,
+            "y": 320,
+            "w": 256,
+            "h": 256,
             "type": "platform"
+          },
+          {
+            "x": 768,
+            "y": 280,
+            "w": 64,
+            "h": 40,
+            "type": "hazard"
+          }
+        ],
+        "tokens": [
+          {
+            "x": 544,
+            "y": 137,
+            "w": 64,
+            "h": 64,
+            "kind": "moth"
+          },
+          {
+            "x": 608,
+            "y": 137,
+            "w": 64,
+            "h": 64,
+            "kind": "moth"
+          },
+          {
+            "x": 960,
+            "y": 147,
+            "w": 64,
+            "h": 64,
+            "kind": "moth"
+          }
+        ],
+        "enemies": [
+          {
+            "x": 384,
+            "y": 256,
+            "w": 64,
+            "h": 64,
+            "kind": "beetle"
           }
         ],
         "name": "Fern Hollow 1"
@@ -48,52 +87,66 @@
         "id": "fern_hollow_01",
         "width": 1024,
         "height": 576,
+        "biome": "grove",
         "layers": [
           {
             "name": "background",
             "z": 0,
             "pieces": [
               {
-                "sprite": "rock",
-                "x": 512,
-                "y": 384,
+                "sprite": "moss",
+                "x": 320,
+                "y": 256,
+                "w": 128,
+                "h": 64,
+                "role": "moss"
+              },
+              {
+                "sprite": "moss",
+                "x": 704,
+                "y": 256,
+                "w": 128,
+                "h": 64,
+                "role": "moss"
+              },
+              {
+                "sprite": "cloud",
+                "x": 102,
+                "y": 44,
+                "w": 128,
+                "h": 64,
+                "role": "cloud"
+              },
+              {
+                "sprite": "cloud",
+                "x": 843,
+                "y": 135,
+                "w": 128,
+                "h": 64,
+                "role": "cloud"
+              },
+              {
+                "sprite": "cloud",
+                "x": 580,
+                "y": 135,
+                "w": 128,
+                "h": 64,
+                "role": "cloud"
+              },
+              {
+                "sprite": "cloud",
+                "x": 544,
+                "y": 128,
+                "w": 128,
+                "h": 64,
+                "role": "cloud"
+              },
+              {
+                "sprite": "vine",
+                "x": 584,
+                "y": 0,
                 "w": 64,
-                "h": 64
-              },
-              {
-                "sprite": "sign",
-                "x": 896,
-                "y": 320,
-                "w": 64,
-                "h": 64
-              },
-              {
-                "sprite": "cloud",
-                "x": 405,
-                "y": 60,
-                "w": 128,
-                "h": 64
-              },
-              {
-                "sprite": "cloud",
-                "x": 109,
-                "y": 61,
-                "w": 128,
-                "h": 64
-              },
-              {
-                "sprite": "cloud",
-                "x": 777,
-                "y": 105,
-                "w": 128,
-                "h": 64
-              },
-              {
-                "sprite": "cloud",
-                "x": 307,
-                "y": 49,
-                "w": 128,
-                "h": 64
+                "h": 128
               }
             ]
           },
@@ -106,28 +159,40 @@
                 "x": 0,
                 "y": 448,
                 "w": 192,
-                "h": 128
+                "h": 128,
+                "role": "stone_wall"
               },
               {
                 "sprite": "stone",
                 "x": 320,
-                "y": 448,
-                "w": 320,
-                "h": 128
+                "y": 320,
+                "w": 192,
+                "h": 64,
+                "role": "stone_wall"
               },
               {
                 "sprite": "stone",
-                "x": 832,
-                "y": 384,
-                "w": 192,
-                "h": 192
+                "x": 704,
+                "y": 320,
+                "w": 256,
+                "h": 256,
+                "role": "stone_wall"
               }
             ]
           },
           {
             "name": "foreground",
             "z": 2,
-            "pieces": []
+            "pieces": [
+              {
+                "sprite": "spike",
+                "x": 768,
+                "y": 256,
+                "w": 64,
+                "h": 64,
+                "role": "spike"
+              }
+            ]
           }
         ],
         "name": "Fern Hollow 1"
@@ -160,20 +225,44 @@
             "type": "platform"
           },
           {
-            "x": 640,
-            "y": 192,
-            "w": 64,
-            "h": 192,
-            "type": "cling"
-          },
-          {
             "x": 704,
             "y": 320,
             "w": 256,
-            "h": 64,
+            "h": 256,
             "type": "platform"
           }
         ],
+        "tokens": [
+          {
+            "x": 224,
+            "y": 329,
+            "w": 64,
+            "h": 64,
+            "kind": "cricket"
+          },
+          {
+            "x": 288,
+            "y": 329,
+            "w": 64,
+            "h": 64,
+            "kind": "cricket"
+          },
+          {
+            "x": 592,
+            "y": 137,
+            "w": 64,
+            "h": 64,
+            "kind": "moth"
+          },
+          {
+            "x": 624,
+            "y": 137,
+            "w": 64,
+            "h": 64,
+            "kind": "moth"
+          }
+        ],
+        "enemies": [],
         "name": "Fern Hollow 2"
       },
       "art": {
@@ -182,63 +271,38 @@
         "id": "fern_hollow_02",
         "width": 1024,
         "height": 576,
+        "biome": "grove",
         "layers": [
           {
             "name": "background",
             "z": 0,
             "pieces": [
               {
-                "sprite": "moss",
+                "sprite": "rock",
                 "x": 384,
-                "y": 256,
-                "w": 128,
-                "h": 64
-              },
-              {
-                "sprite": "canopy",
-                "x": 576,
-                "y": 128,
-                "w": 192,
-                "h": 64
-              },
-              {
-                "sprite": "lantern",
-                "x": 768,
                 "y": 256,
                 "w": 64,
                 "h": 64
               },
               {
                 "sprite": "cloud",
-                "x": 724,
-                "y": 53,
+                "x": 367,
+                "y": 40,
                 "w": 128,
-                "h": 64
+                "h": 64,
+                "role": "cloud"
               },
               {
                 "sprite": "cloud",
-                "x": 868,
-                "y": 60,
+                "x": 171,
+                "y": 170,
                 "w": 128,
-                "h": 64
-              },
-              {
-                "sprite": "cloud",
-                "x": 705,
-                "y": 92,
-                "w": 128,
-                "h": 64
-              },
-              {
-                "sprite": "cloud",
-                "x": 285,
-                "y": 67,
-                "w": 128,
-                "h": 64
+                "h": 64,
+                "role": "cloud"
               },
               {
                 "sprite": "vine",
-                "x": 2,
+                "x": 548,
                 "y": 0,
                 "w": 64,
                 "h": 128
@@ -254,28 +318,24 @@
                 "x": 0,
                 "y": 448,
                 "w": 192,
-                "h": 128
+                "h": 128,
+                "role": "block_base"
               },
               {
                 "sprite": "dirt",
                 "x": 384,
                 "y": 320,
                 "w": 192,
-                "h": 64
-              },
-              {
-                "sprite": "trunk",
-                "x": 640,
-                "y": 192,
-                "w": 64,
-                "h": 192
+                "h": 64,
+                "role": "block_base"
               },
               {
                 "sprite": "dirt",
                 "x": 704,
                 "y": 320,
                 "w": 256,
-                "h": 64
+                "h": 256,
+                "role": "block_base"
               }
             ]
           },
@@ -310,16 +370,41 @@
           {
             "x": 448,
             "y": 320,
-            "w": 256,
-            "h": 64,
+            "w": 320,
+            "h": 256,
             "type": "platform"
+          }
+        ],
+        "tokens": [
+          {
+            "x": 272,
+            "y": 211,
+            "w": 64,
+            "h": 64,
+            "kind": "fly"
           },
           {
-            "x": 768,
-            "y": 128,
+            "x": 320,
+            "y": 192,
             "w": 64,
-            "h": 192,
-            "type": "cling"
+            "h": 64,
+            "kind": "fly"
+          },
+          {
+            "x": 368,
+            "y": 211,
+            "w": 64,
+            "h": 64,
+            "kind": "fly"
+          }
+        ],
+        "enemies": [
+          {
+            "x": 576,
+            "y": 256,
+            "w": 64,
+            "h": 64,
+            "kind": "spider"
           }
         ],
         "name": "Fern Hollow 3"
@@ -330,6 +415,7 @@
         "id": "fern_hollow_03",
         "width": 1024,
         "height": 576,
+        "biome": "grove",
         "layers": [
           {
             "name": "background",
@@ -340,35 +426,55 @@
                 "x": 128,
                 "y": 256,
                 "w": 64,
-                "h": 64
+                "h": 64,
+                "role": "sign"
               },
               {
-                "sprite": "mushroom",
+                "sprite": "sign",
                 "x": 576,
                 "y": 256,
                 "w": 64,
-                "h": 64
-              },
-              {
-                "sprite": "canopy",
-                "x": 704,
-                "y": 64,
-                "w": 192,
-                "h": 64
+                "h": 64,
+                "role": "sign"
               },
               {
                 "sprite": "cloud",
-                "x": 195,
-                "y": 164,
+                "x": 185,
+                "y": 81,
                 "w": 128,
-                "h": 64
+                "h": 64,
+                "role": "cloud"
               },
               {
                 "sprite": "cloud",
-                "x": 680,
-                "y": 107,
+                "x": 24,
+                "y": 76,
                 "w": 128,
-                "h": 64
+                "h": 64,
+                "role": "cloud"
+              },
+              {
+                "sprite": "cloud",
+                "x": 19,
+                "y": 166,
+                "w": 128,
+                "h": 64,
+                "role": "cloud"
+              },
+              {
+                "sprite": "cloud",
+                "x": 465,
+                "y": 183,
+                "w": 128,
+                "h": 64,
+                "role": "cloud"
+              },
+              {
+                "sprite": "vine",
+                "x": 426,
+                "y": 0,
+                "w": 64,
+                "h": 128
               }
             ]
           },
@@ -381,21 +487,16 @@
                 "x": 64,
                 "y": 320,
                 "w": 192,
-                "h": 256
+                "h": 256,
+                "role": "block_base"
               },
               {
                 "sprite": "dirt",
                 "x": 448,
                 "y": 320,
-                "w": 256,
-                "h": 64
-              },
-              {
-                "sprite": "trunk",
-                "x": 768,
-                "y": 128,
-                "w": 64,
-                "h": 192
+                "w": 320,
+                "h": 256,
+                "role": "block_base"
               }
             ]
           },
@@ -430,11 +531,21 @@
           {
             "x": 512,
             "y": 320,
-            "w": 192,
-            "h": 256,
+            "w": 320,
+            "h": 64,
             "type": "platform"
           }
         ],
+        "tokens": [
+          {
+            "x": 880,
+            "y": 137,
+            "w": 64,
+            "h": 64,
+            "kind": "grub"
+          }
+        ],
+        "enemies": [],
         "name": "Fern Hollow 4"
       },
       "art": {
@@ -443,38 +554,51 @@
         "id": "fern_hollow_04",
         "width": 1024,
         "height": 576,
+        "biome": "grove",
         "layers": [
           {
             "name": "background",
             "z": 0,
             "pieces": [
               {
-                "sprite": "mushroom",
-                "x": 576,
+                "sprite": "moss",
+                "x": 640,
                 "y": 256,
-                "w": 64,
-                "h": 64
+                "w": 128,
+                "h": 64,
+                "role": "moss"
               },
               {
                 "sprite": "cloud",
-                "x": 838,
-                "y": 128,
+                "x": 831,
+                "y": 190,
                 "w": 128,
-                "h": 64
+                "h": 64,
+                "role": "cloud"
               },
               {
                 "sprite": "cloud",
-                "x": 460,
-                "y": 120,
+                "x": 880,
+                "y": 177,
                 "w": 128,
-                "h": 64
+                "h": 64,
+                "role": "cloud"
               },
               {
                 "sprite": "cloud",
-                "x": 805,
-                "y": 178,
+                "x": 592,
+                "y": 176,
                 "w": 128,
-                "h": 64
+                "h": 64,
+                "role": "cloud"
+              },
+              {
+                "sprite": "cloud",
+                "x": 543,
+                "y": 171,
+                "w": 128,
+                "h": 64,
+                "role": "cloud"
               }
             ]
           },
@@ -487,14 +611,16 @@
                 "x": 64,
                 "y": 320,
                 "w": 192,
-                "h": 256
+                "h": 256,
+                "role": "block_base"
               },
               {
                 "sprite": "dirt",
                 "x": 512,
                 "y": 320,
-                "w": 192,
-                "h": 256
+                "w": 320,
+                "h": 64,
+                "role": "block_base"
               }
             ]
           },
@@ -529,25 +655,56 @@
           {
             "x": 448,
             "y": 448,
-            "w": 128,
-            "h": 128,
+            "w": 192,
+            "h": 64,
             "type": "platform"
           },
           {
-            "x": 640,
-            "y": 256,
+            "x": 512,
+            "y": 408,
+            "w": 64,
+            "h": 40,
+            "type": "hazard"
+          },
+          {
+            "x": 704,
+            "y": 320,
             "w": 64,
             "h": 192,
             "type": "cling"
           },
           {
-            "x": 768,
+            "x": 832,
             "y": 448,
-            "w": 256,
+            "w": 192,
             "h": 64,
             "type": "platform"
           }
         ],
+        "tokens": [
+          {
+            "x": 656,
+            "y": 339,
+            "w": 64,
+            "h": 64,
+            "kind": "fly"
+          },
+          {
+            "x": 704,
+            "y": 320,
+            "w": 64,
+            "h": 64,
+            "kind": "fly"
+          },
+          {
+            "x": 752,
+            "y": 339,
+            "w": 64,
+            "h": 64,
+            "kind": "fly"
+          }
+        ],
+        "enemies": [],
         "name": "Fern Hollow 5"
       },
       "art": {
@@ -556,6 +713,7 @@
         "id": "fern_hollow_05",
         "width": 1024,
         "height": 576,
+        "biome": "grove",
         "layers": [
           {
             "name": "background",
@@ -566,10 +724,11 @@
                 "x": 64,
                 "y": 384,
                 "w": 64,
-                "h": 64
+                "h": 64,
+                "role": "plant_fern"
               },
               {
-                "sprite": "mushroom",
+                "sprite": "rock",
                 "x": 448,
                 "y": 384,
                 "w": 64,
@@ -577,42 +736,47 @@
               },
               {
                 "sprite": "canopy",
-                "x": 576,
-                "y": 192,
+                "x": 640,
+                "y": 256,
                 "w": 192,
-                "h": 64
+                "h": 64,
+                "role": "tree_leaves"
               },
               {
-                "sprite": "mushroom",
+                "sprite": "shrub",
                 "x": 896,
                 "y": 384,
                 "w": 64,
-                "h": 64
+                "h": 64,
+                "role": "plant_shrub"
               },
               {
                 "sprite": "cloud",
-                "x": 212,
-                "y": 124,
+                "x": 822,
+                "y": 172,
                 "w": 128,
-                "h": 64
+                "h": 64,
+                "role": "cloud"
               },
               {
                 "sprite": "cloud",
-                "x": 723,
-                "y": 51,
+                "x": 175,
+                "y": 199,
                 "w": 128,
-                "h": 64
+                "h": 64,
+                "role": "cloud"
               },
               {
                 "sprite": "cloud",
-                "x": 682,
-                "y": 144,
+                "x": 767,
+                "y": 46,
                 "w": 128,
-                "h": 64
+                "h": 64,
+                "role": "cloud"
               },
               {
                 "sprite": "vine",
-                "x": 672,
+                "x": 930,
                 "y": 0,
                 "w": 64,
                 "h": 128
@@ -628,35 +792,48 @@
                 "x": 64,
                 "y": 448,
                 "w": 192,
-                "h": 128
+                "h": 128,
+                "role": "stone_wall"
               },
               {
                 "sprite": "stone",
                 "x": 448,
                 "y": 448,
-                "w": 128,
-                "h": 128
+                "w": 192,
+                "h": 64,
+                "role": "stone_wall"
               },
               {
                 "sprite": "trunk",
-                "x": 640,
-                "y": 256,
+                "x": 704,
+                "y": 320,
                 "w": 64,
-                "h": 192
+                "h": 192,
+                "role": "tree_trunk"
               },
               {
                 "sprite": "stone",
-                "x": 768,
+                "x": 832,
                 "y": 448,
-                "w": 256,
-                "h": 64
+                "w": 192,
+                "h": 64,
+                "role": "stone_wall"
               }
             ]
           },
           {
             "name": "foreground",
             "z": 2,
-            "pieces": []
+            "pieces": [
+              {
+                "sprite": "spike",
+                "x": 512,
+                "y": 384,
+                "w": 64,
+                "h": 64,
+                "role": "spike"
+              }
+            ]
           }
         ],
         "name": "Fern Hollow 5"
@@ -683,12 +860,36 @@
           },
           {
             "x": 384,
-            "y": 320,
-            "w": 320,
+            "y": 224,
+            "w": 192,
             "h": 64,
+            "type": "platform"
+          },
+          {
+            "x": 768,
+            "y": 224,
+            "w": 192,
+            "h": 352,
             "type": "platform"
           }
         ],
+        "tokens": [
+          {
+            "x": 608,
+            "y": 105,
+            "w": 64,
+            "h": 64,
+            "kind": "fly"
+          },
+          {
+            "x": 672,
+            "y": 105,
+            "w": 64,
+            "h": 64,
+            "kind": "fly"
+          }
+        ],
+        "enemies": [],
         "name": "Fern Hollow 6"
       },
       "art": {
@@ -697,45 +898,67 @@
         "id": "fern_hollow_06",
         "width": 1024,
         "height": 576,
+        "biome": "grove",
         "layers": [
           {
             "name": "background",
             "z": 0,
             "pieces": [
               {
-                "sprite": "rock",
+                "sprite": "mushroom",
                 "x": 0,
                 "y": 256,
                 "w": 64,
-                "h": 64
+                "h": 64,
+                "role": "plant_shrub"
               },
               {
-                "sprite": "rock",
+                "sprite": "shrub",
                 "x": 448,
-                "y": 256,
+                "y": 160,
                 "w": 64,
-                "h": 64
+                "h": 64,
+                "role": "plant_shrub"
+              },
+              {
+                "sprite": "mushroom",
+                "x": 832,
+                "y": 160,
+                "w": 64,
+                "h": 64,
+                "role": "plant_shrub"
               },
               {
                 "sprite": "cloud",
-                "x": 294,
-                "y": 107,
+                "x": 178,
+                "y": 145,
                 "w": 128,
-                "h": 64
+                "h": 64,
+                "role": "cloud"
               },
               {
                 "sprite": "cloud",
-                "x": 183,
-                "y": 134,
+                "x": 885,
+                "y": 159,
                 "w": 128,
-                "h": 64
+                "h": 64,
+                "role": "cloud"
               },
               {
-                "sprite": "vine",
-                "x": 167,
-                "y": 0,
-                "w": 64,
-                "h": 128
+                "sprite": "cloud",
+                "x": 165,
+                "y": 98,
+                "w": 128,
+                "h": 64,
+                "role": "cloud"
+              },
+              {
+                "sprite": "cloud",
+                "x": 509,
+                "y": 141,
+                "w": 128,
+                "h": 64,
+                "role": "cloud"
               }
             ]
           },
@@ -748,14 +971,24 @@
                 "x": 0,
                 "y": 320,
                 "w": 192,
-                "h": 256
+                "h": 256,
+                "role": "wood_plank"
               },
               {
                 "sprite": "plank",
                 "x": 384,
-                "y": 320,
-                "w": 320,
-                "h": 64
+                "y": 224,
+                "w": 192,
+                "h": 64,
+                "role": "wood_plank"
+              },
+              {
+                "sprite": "plank",
+                "x": 768,
+                "y": 224,
+                "w": 192,
+                "h": 352,
+                "role": "wood_plank"
               }
             ]
           },

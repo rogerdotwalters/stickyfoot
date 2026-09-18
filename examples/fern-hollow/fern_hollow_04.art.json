@@ -4,38 +4,51 @@
   "id": "fern_hollow_04",
   "width": 1024,
   "height": 576,
+  "biome": "grove",
   "layers": [
     {
       "name": "background",
       "z": 0,
       "pieces": [
         {
-          "sprite": "mushroom",
-          "x": 576,
+          "sprite": "moss",
+          "x": 640,
           "y": 256,
-          "w": 64,
-          "h": 64
+          "w": 128,
+          "h": 64,
+          "role": "moss"
         },
         {
           "sprite": "cloud",
-          "x": 838,
-          "y": 128,
+          "x": 831,
+          "y": 190,
           "w": 128,
-          "h": 64
+          "h": 64,
+          "role": "cloud"
         },
         {
           "sprite": "cloud",
-          "x": 460,
-          "y": 120,
+          "x": 880,
+          "y": 177,
           "w": 128,
-          "h": 64
+          "h": 64,
+          "role": "cloud"
         },
         {
           "sprite": "cloud",
-          "x": 805,
-          "y": 178,
+          "x": 592,
+          "y": 176,
           "w": 128,
-          "h": 64
+          "h": 64,
+          "role": "cloud"
+        },
+        {
+          "sprite": "cloud",
+          "x": 543,
+          "y": 171,
+          "w": 128,
+          "h": 64,
+          "role": "cloud"
         }
       ]
     },
@@ -48,14 +61,16 @@
           "x": 64,
           "y": 320,
           "w": 192,
-          "h": 256
+          "h": 256,
+          "role": "block_base"
         },
         {
           "sprite": "dirt",
           "x": 512,
           "y": 320,
-          "w": 192,
-          "h": 256
+          "w": 320,
+          "h": 64,
+          "role": "block_base"
         }
       ]
     },

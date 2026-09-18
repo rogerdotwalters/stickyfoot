@@ -4,6 +4,7 @@
   "id": "fern_hollow_05",
   "width": 1024,
   "height": 576,
+  "biome": "grove",
   "layers": [
     {
       "name": "background",
@@ -14,10 +15,11 @@
           "x": 64,
           "y": 384,
           "w": 64,
-          "h": 64
+          "h": 64,
+          "role": "plant_fern"
         },
         {
-          "sprite": "mushroom",
+          "sprite": "rock",
           "x": 448,
           "y": 384,
           "w": 64,
@@ -25,42 +27,47 @@
         },
         {
           "sprite": "canopy",
-          "x": 576,
-          "y": 192,
+          "x": 640,
+          "y": 256,
           "w": 192,
-          "h": 64
+          "h": 64,
+          "role": "tree_leaves"
         },
         {
-          "sprite": "mushroom",
+          "sprite": "shrub",
           "x": 896,
           "y": 384,
           "w": 64,
-          "h": 64
+          "h": 64,
+          "role": "plant_shrub"
         },
         {
           "sprite": "cloud",
-          "x": 212,
-          "y": 124,
+          "x": 822,
+          "y": 172,
           "w": 128,
-          "h": 64
+          "h": 64,
+          "role": "cloud"
         },
         {
           "sprite": "cloud",
-          "x": 723,
-          "y": 51,
+          "x": 175,
+          "y": 199,
           "w": 128,
-          "h": 64
+          "h": 64,
+          "role": "cloud"
         },
         {
           "sprite": "cloud",
-          "x": 682,
-          "y": 144,
+          "x": 767,
+          "y": 46,
           "w": 128,
-          "h": 64
+          "h": 64,
+          "role": "cloud"
         },
         {
           "sprite": "vine",
-          "x": 672,
+          "x": 930,
           "y": 0,
           "w": 64,
           "h": 128
@@ -76,35 +83,48 @@
           "x": 64,
           "y": 448,
           "w": 192,
-          "h": 128
+          "h": 128,
+          "role": "stone_wall"
         },
         {
           "sprite": "stone",
           "x": 448,
           "y": 448,
-          "w": 128,
-          "h": 128
+          "w": 192,
+          "h": 64,
+          "role": "stone_wall"
         },
         {
           "sprite": "trunk",
-          "x": 640,
-          "y": 256,
+          "x": 704,
+          "y": 320,
           "w": 64,
-          "h": 192
+          "h": 192,
+          "role": "tree_trunk"
         },
         {
           "sprite": "stone",
-          "x": 768,
+          "x": 832,
           "y": 448,
-          "w": 256,
-          "h": 64
+          "w": 192,
+          "h": 64,
+          "role": "stone_wall"
         }
       ]
     },
     {
       "name": "foreground",
       "z": 2,
-      "pieces": []
+      "pieces": [
+        {
+          "sprite": "spike",
+          "x": 512,
+          "y": 384,
+          "w": 64,
+          "h": 64,
+          "role": "spike"
+        }
+      ]
     }
   ],
   "name": "Fern Hollow 5"

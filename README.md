@@ -31,6 +31,20 @@ browser's local storage. Clearing site data erases it.
 Import either form in the editor: the `.map.json` replaces the whole map, a
 `.collision.json` + `.art.json` pair replaces the slide you are on.
 
+## Cabinet mode
+
+**Run game** in the header launches the arcade cabinet: fullscreen, no page
+chrome, no navigation, and no exit but the ⏻ button, which confirms first. The
+back button is caught and pushed back; closing the tab asks first. The attract
+screen shows the top eight names and scores and offers one action — play.
+
+A cabinet run is anonymous. When it ends the score is held aside and the player
+is asked for a name, an email and a phone number. All three are trimmed and
+validated; if any is missing or malformed the score is discarded and nothing is
+written. Discarding, or letting the ninety-second timer run out, does the same.
+Scores that pass are matched to existing players by email or phone digits, so a
+regular keeps one row on the board.
+
 ## Playing
 
 Drag away from the gecko to load the slingshot, aim the arc, release. Land on
@@ -39,7 +53,16 @@ a ledge and you can drag again. `platform` boxes are landed on from above,
 throw you back up, and `hazard` boxes end the run. So does falling off the
 bottom, or letting the creeping rot on the left edge catch you.
 
-`P` pauses, `R` restarts, `F3` opens the node monitor.
+Pressing **start run** drops the page chrome and opens the game view — stage
+centred on black, menus inside the game. `F` or the ⛶ button goes to real
+fullscreen and back; where a browser or embedding frame blocks the Fullscreen
+API, it fills the window instead. `Esc` opens the in-game menu (resume,
+restart, change player, leaderboard, fullscreen, leave), `P` also pauses, `R`
+restarts, `F3` opens the node monitor.
+
+On a phone in portrait the game view asks the device to lock to landscape;
+where that is refused — iOS, and any embedded frame — the stage itself rotates
+90° to fill the screen, with pointer input mapped back through the rotation.
 
 ## Architecture
 

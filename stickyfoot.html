@@ -83,6 +83,30 @@ nav{display:flex;flex-wrap:wrap;gap:6px}
 .stage-wrap{position:relative;width:100%;max-width:1024px;margin:0 auto;background:var(--stage);
   border:3px solid var(--stage-edge);box-shadow:0 0 0 2px var(--edge) ;}
 .stage-wrap canvas{display:block;width:100%;height:auto;aspect-ratio:16/9;image-rendering:pixelated;image-rendering:crisp-edges;touch-action:none;background:var(--stage)}
+.hud-btns{position:absolute;top:10px;right:10px;display:flex;gap:6px;z-index:6}
+.hud-btn{width:36px;height:36px;padding:0;background:rgba(8,16,12,.55);color:#dff3e2;
+  border:2px solid rgba(143,174,153,.45);cursor:pointer;font-size:14px;line-height:1;
+  font-family:Silkscreen,monospace}
+.hud-btn:hover{background:rgba(8,16,12,.9);border-color:var(--lime-bright);color:var(--lime-bright)}
+.hud-btn[hidden]{display:none}
+.rotate-hint{display:none}
+/* the immersive game view: chrome out of the way, stage centred on black */
+.stage-fill.immersive, .stage-fill:fullscreen{display:grid;place-items:center;background:#050907}
+.stage-fill.immersive{position:fixed;inset:0;z-index:50;overflow:hidden}
+/* portrait phone, no orientation lock available: turn the whole stage sideways */
+.stage-fill.turned .stage-wrap{transform:rotate(90deg);width:min(100svh, calc(100vw * 16 / 9))}
+.stage-fill.turned .rotate-hint{display:none}
+html.turned dialog{transform:rotate(90deg)}
+.stage-fill.immersive .stage-wrap, .stage-fill:fullscreen .stage-wrap{
+  width:min(100vw, calc(100svh * 16 / 9));max-width:none;border-width:0;box-shadow:none}
+body.ingame{overflow:hidden}
+.cabinet.ingame > .marquee, .cabinet.ingame .deck{display:none}
+.cabinet.ingame{padding:0;gap:0}
+@media (orientation:portrait) and (max-width:820px){
+  .stage-fill.immersive .rotate-hint, .stage-fill:fullscreen .rotate-hint{
+    display:block;position:absolute;left:50%;bottom:-38px;transform:translateX(-50%);
+    white-space:nowrap;font-family:Silkscreen,monospace;font-size:10px;color:#8fae99}
+}
 .scanlines{position:absolute;inset:0;pointer-events:none;opacity:.16;
   background:repeating-linear-gradient(to bottom,rgba(0,0,0,.65) 0 1px,transparent 1px 3px)}
 .overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -99,6 +123,26 @@ nav{display:flex;flex-wrap:wrap;gap:6px}
 .key:active{transform:translateY(2px);border-bottom-width:2px}
 .key.ghost{background:transparent;color:#dff3e2;border:2px solid #4d8a30;border-bottom-width:4px}
 .key.warn{background:var(--coral-bright);border-bottom-color:#8c2a20;color:#2a0806}
+.nav-btn.run{background:var(--amber);color:#1a1205;border-color:var(--amber);font-weight:700}
+.nav-btn.run:hover{background:var(--amber-bright);border-color:var(--amber-bright)}
+.hiscores{display:none;width:min(420px,88%);margin-top:4px}
+.overlay.cabinet .hiscores{display:block}
+.overlay.cabinet #btnPickPlayer,.overlay.cabinet #startStats{display:none}
+.hiscores h3{font-family:Silkscreen,monospace;font-size:11px;color:var(--amber-bright);margin:0 0 6px;letter-spacing:.08em}
+.hs-row{display:flex;gap:10px;align-items:baseline;font-family:Silkscreen,monospace;font-size:12px;
+  color:#cfe8d4;padding:2px 0;border-bottom:1px dashed rgba(143,174,153,.22)}
+.hs-row .hs-rank{color:var(--amber);width:22px;flex:0 0 auto}
+.hs-row .hs-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}
+.hs-row .hs-score{color:var(--lime-bright)}
+.hs-empty{font-size:12px;color:#8fae99}
+.scoreform{display:grid;gap:8px;width:min(360px,90%);text-align:left}
+.scoreform label{font-family:Silkscreen,monospace;font-size:10px;color:#9bc0a6;margin-bottom:2px}
+.scoreform input{width:100%;padding:8px 10px;background:rgba(6,14,10,.75);border:2px solid #4d8a30;
+  color:#dff3e2;font:inherit;font-size:15px}
+.scoreform input:focus{outline:none;border-color:var(--amber-bright)}
+.scoreform input.bad{border-color:var(--coral-bright)}
+.overlay .err{color:var(--coral-bright);font-size:12.5px;min-height:1em;margin:0}
+.tick{font-family:Silkscreen,monospace;font-size:10px;color:#8fae99;margin:0}
 .statline{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;font-family:Silkscreen,monospace;font-size:12px;color:#9bc0a6}
 .statline b{color:#dff3e2;font-weight:400}
 
@@ -209,6 +253,7 @@ dialog::backdrop{background:rgba(4,10,7,.72)}
       <span class="tag">slingshot gecko, endless ledges</span>
     </div>
     <button class="player-chip" id="playerChip" title="Change player">🦎 <span id="chipName" class="none">no player</span></button>
+    <button class="nav-btn run" id="btnRunGame">▶ run game</button>
     <nav>
       <button class="nav-btn" data-go="play" aria-current="page">play</button>
       <button class="nav-btn" data-go="editor">editor</button>
@@ -219,6 +264,7 @@ dialog::backdrop{background:rgba(4,10,7,.72)}
 
   <!-- ============ PLAY ============ -->
   <section class="screen on" id="screen-play">
+    <div class="stage-fill" id="stageFill">
     <div class="stage-wrap">
       <canvas id="game" width="1024" height="576" aria-label="Stickyfoot game"></canvas>
       <div class="scanlines"></div>
@@ -229,7 +275,8 @@ dialog::backdrop{background:rgba(4,10,7,.72)}
           <button class="key" id="btnPlay">start run</button>
           <button class="key ghost" id="btnPickPlayer">choose player</button>
         </div>
-        <div class="statline"><span>best <b id="startBest">0</b></span><span>player <b id="startWho">none</b></span></div>
+        <div class="statline" id="startStats"><span>best <b id="startBest">0</b></span><span>player <b id="startWho">none</b></span></div>
+        <div class="hiscores" id="attractScores"></div>
       </div>
       <div class="overlay" id="ovDead" hidden>
         <h2 id="deadWhy">You fell</h2>
@@ -243,16 +290,54 @@ dialog::backdrop{background:rgba(4,10,7,.72)}
         <div class="row">
           <button class="key" id="btnAgain">run again</button>
           <button class="key ghost" id="btnToBoard">leaderboard</button>
+          <button class="key ghost" id="btnDeadExit">leave game</button>
         </div>
+      </div>
+      <div class="overlay" id="ovScore" hidden>
+        <h2>Run over — <span id="scoreValue">0</span> points</h2>
+        <p>Put your name on the board. Email and phone are both required; without them the score is thrown away.</p>
+        <div class="scoreform">
+          <div><label for="sName">name</label><input type="text" id="sName" maxlength="40" autocomplete="off" spellcheck="false"></div>
+          <div><label for="sEmail">email</label><input type="email" id="sEmail" inputmode="email" maxlength="80" autocomplete="off" spellcheck="false"></div>
+          <div><label for="sPhone">phone</label><input type="tel" id="sPhone" inputmode="tel" maxlength="32" autocomplete="off"></div>
+        </div>
+        <p class="err" id="scoreErr"></p>
+        <div class="row">
+          <button class="key" id="btnScoreSave">save score</button>
+          <button class="key ghost" id="btnScoreSkip">discard score</button>
+        </div>
+        <p class="tick" id="scoreTimer"></p>
       </div>
       <div class="overlay" id="ovPause" hidden>
         <h2>Paused</h2>
-        <div class="row"><button class="key" id="btnResume">resume</button><button class="key ghost" id="btnQuit">end run</button></div>
+        <div class="statline">
+          <span>score <b id="pauseScore">0</b></span>
+          <span>ledges <b id="pauseLedges">0</b></span>
+          <span>player <b id="pauseWho">none</b></span>
+        </div>
+        <div class="row">
+          <button class="key" id="btnResume">resume</button>
+          <button class="key ghost" id="btnRestart">restart run</button>
+        </div>
+        <div class="row">
+          <button class="key ghost" id="btnMenuPlayer">change player</button>
+          <button class="key ghost" id="btnMenuBoard">leaderboard</button>
+          <button class="key ghost" id="btnMenuFull">fullscreen</button>
+          <button class="key ghost" id="btnQuit">leave game</button>
+        </div>
+      </div>
+      <div class="rotate-hint" id="rotateHint">Turn your device sideways for the full screen.</div>
+      <div class="hud-btns" id="hudBtns">
+        <button class="hud-btn" id="btnFull" title="fullscreen (F)" aria-label="toggle fullscreen">⛶</button>
+        <button class="hud-btn" id="btnMenu" title="menu (Esc)" aria-label="open the game menu">❚❚</button>
+        <button class="hud-btn" id="btnPower" title="shut the cabinet down" aria-label="shut the cabinet down" hidden>⏻</button>
       </div>
     </div>
+    </div>
     <div class="deck">
-      <span class="hint" id="playHint">Mouse or finger: drag anywhere on the screen, away from the gecko, then release. <kbd>P</kbd> pauses, <kbd>R</kbd> restarts, <kbd>F3</kbd> shows the node monitor.</span>
+      <span class="hint" id="playHint">Mouse or finger: drag anywhere on the screen, away from the gecko, then release. <kbd>F</kbd> fullscreens, <kbd>Esc</kbd> opens the menu, <kbd>R</kbd> restarts, <kbd>F3</kbd> shows the node monitor.</span>
       <span style="display:flex;gap:6px">
+        <button class="btn small" id="btnFullDeck">fullscreen</button>
         <button class="btn small" id="btnDebug">node monitor</button>
         <button class="btn small" id="btnSegSource">world: built-in</button>
       </span>
@@ -333,8 +418,12 @@ dialog::backdrop{background:rgba(4,10,7,.72)}
             <input type="text" id="uName" name="uName" placeholder="Rosa Vance" maxlength="60">
           </div>
           <div class="field">
-            <label for="uContact">email or phone</label>
-            <input type="text" id="uContact" name="uContact" placeholder="rosa@example.com or 555 0143" maxlength="80">
+            <label for="uEmail">email</label>
+            <input type="email" id="uEmail" name="uEmail" placeholder="rosa@example.com" maxlength="80">
+          </div>
+          <div class="field">
+            <label for="uPhone">phone</label>
+            <input type="tel" id="uPhone" name="uPhone" placeholder="555 0143" maxlength="32">
           </div>
         </div>
         <p class="err" id="userErr"></p>
@@ -347,7 +436,7 @@ dialog::backdrop{background:rgba(4,10,7,.72)}
       <h3>leaderboard</h3>
       <div class="tablewrap">
         <table id="boardTable">
-          <thead><tr><th>#</th><th>player</th><th>contact</th><th>best</th><th>ledges</th><th>runs</th><th>last run</th><th></th></tr></thead>
+          <thead><tr><th>#</th><th>player</th><th>email</th><th>phone</th><th>best</th><th>ledges</th><th>runs</th><th>last run</th><th></th></tr></thead>
           <tbody id="boardBody"></tbody>
         </table>
       </div>
@@ -406,6 +495,7 @@ dialog::backdrop{background:rgba(4,10,7,.72)}
     { "name": "foreground", "z": 2, "pieces": [] }
   ]
 }</code></pre>
+      <p><code>entry</code> is where the gecko stands when a segment is the first node of a run, and the camera centres on it, so put it over a ledge. The editor draws a ghost gecko there. If a run starts on a segment whose entry is not above anything solid, the runtime falls back to the leftmost ledge.</p>
       <p>Both files are validated on load: mismatched <code>width</code>/<code>height</code>, a missing id, or an unknown box type is rejected rather than silently drawn wrong. A segment with art but no collision is playable but empty; a segment with collision but no art renders as untextured hitboxes, which is useful while blocking out a layout.</p>
 
       <h3>Box types</h3>
@@ -463,6 +553,11 @@ dialog::backdrop{background:rgba(4,10,7,.72)}
 v     = normalize(-d) × power × 23   // world px per tick
 each tick:  vy += 0.62 ;  x += vx ;  y += vy ;  vx *= 0.9994</code></pre>
       <p>The simulation runs on a fixed 60 Hz accumulator so the arc is identical on any refresh rate. The dotted preview is the same integrator run forward, and it gets shorter as your score climbs — early ledges show you the whole arc, later ones make you read it.</p>
+
+      <h2>Cabinet mode</h2>
+      <p><b>Run game</b> in the header launches the cabinet: fullscreen, no page chrome, no navigation. It is meant to be left running at an event, so it does not let go on its own — the browser back button is caught and pushed back, closing the tab asks for confirmation, and the only way out is the ⏻ button, which asks before it shuts down. Fullscreen is the one thing a browser will always take back: if someone presses Escape the cabinet keeps running filled to the window and the ⛶ button restores it.</p>
+      <p>The attract screen shows the top eight names and scores and offers one action: play. A cabinet run is anonymous while it is being played — there is no player to pick. When the run ends, the score is held aside and the player is asked for a name, an email and a phone number. All three are trimmed of surrounding and repeated whitespace, then checked: at least two characters of name, an address of the form <code>name@host.tld</code>, and 7 to 15 digits of phone. <b>If any of them is missing or malformed the score is discarded</b> — nothing is written. The same happens if the player presses discard, or walks away and the ninety-second timer runs out.</p>
+      <p>A score that passes is matched against the existing players by email or by phone digits, ignoring case and formatting, so a regular keeps one row on the board rather than collecting duplicates. Their best score is the highest they have ever posted, not the most recent.</p>
 
       <h2>Where your data lives</h2>
       <p>Players, high scores and saved segments are kept in this browser's local storage under the <code>stickyfoot.*</code> keys. Nothing is sent anywhere, and clearing the browser's site data erases it. Exported segment files are plain JSON you can keep, edit by hand, or hand to someone else to import.</p>
@@ -523,7 +618,8 @@ each tick:  vy += 0.62 ;  x += vx ;  y += vy ;  vx *= 0.9994</code></pre>
   <div class="dlg-head">edit player</div>
   <div class="dlg-body">
     <div class="field"><label for="eName">full name</label><input type="text" id="eName" maxlength="60"></div>
-    <div class="field"><label for="eContact">email or phone</label><input type="text" id="eContact" maxlength="80"></div>
+    <div class="field"><label for="eEmail">email</label><input type="email" id="eEmail" maxlength="80"></div>
+    <div class="field"><label for="ePhone">phone</label><input type="tel" id="ePhone" maxlength="32"></div>
     <div class="grid2">
       <div class="field"><label for="eScore">best score</label><input type="number" id="eScore" min="0" step="1"></div>
       <div class="field"><label for="eLedges">best ledges</label><input type="number" id="eLedges" min="0" step="1"></div>
@@ -569,7 +665,14 @@ const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
 const clamp = (v,a,b) => v<a?a:v>b?b:v;
 const lerp = (a,b,t) => a+(b-a)*t;
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function toast(msg){ const t=$("#toast"); t.textContent=msg; t.hidden=false; clearTimeout(toast._t); toast._t=setTimeout(()=>t.hidden=true,2600); }
+function toast(msg){
+  const t=$("#toast");
+  // in fullscreen only the fullscreen subtree renders, so move the toast inside it
+  const host = document.fullscreenElement || document.body;
+  if(t.parentElement !== host) host.appendChild(t);
+  t.textContent=msg; t.hidden=false;
+  clearTimeout(toast._t); toast._t=setTimeout(()=>t.hidden=true,2600);
+}
 function hash32(n){ n=(n^61)^(n>>>16); n=(n+(n<<3))|0; n^=n>>>4; n=Math.imul(n,0x27d4eb2d); n^=n>>>15; return (n>>>0)/4294967296; }
 function rngFrom(seed){ let s=seed>>>0||1; return ()=>{ s^=s<<13; s>>>=0; s^=s>>17; s^=s<<5; s>>>=0; return s/4294967296; }; }
 const pick = (rnd, arr) => arr[Math.floor(rnd()*arr.length) % arr.length];
@@ -783,11 +886,36 @@ const Store = {
   savePrefs(){ save(KEY.prefs, this.prefs); },
   active(){ return this.users.find(u=>u.id===this.activeId) || null; },
   setActive(id){ this.activeId=id; save(KEY.active,id); paintChip(); },
-  addUser(name, contact){
+  addUser(name, email, phone){
     const u = { id:"u"+Date.now().toString(36)+Math.floor(Math.random()*1e4).toString(36),
-      name, contact, best:0, bestLedges:0, bestDist:0, runs:0, lastAt:null, createdAt:Date.now() };
+      name:clean(name), email:clean(email).toLowerCase(), phone:clean(phone),
+      contact:clean(email).toLowerCase(),
+      best:0, bestLedges:0, bestDist:0, runs:0, lastAt:null, createdAt:Date.now() };
     this.users.push(u); this.saveUsers(); return u;
   },
+  findBy(email, phone){
+    const e = clean(email).toLowerCase(), pk = phoneKey(phone);
+    return this.users.find(u => (e && userEmail(u).toLowerCase() === e) ||
+                                (pk && phoneKey(userPhone(u)) === pk)) || null;
+  },
+  /* A cabinet run is anonymous until it ends. The score only lands if the
+     name, email and phone all pass; otherwise nothing is written at all. */
+  saveScore(entry){
+    const name = clean(entry.name), email = clean(entry.email).toLowerCase(), phone = clean(entry.phone);
+    if(!validName(name) || !validEmail(email) || !validPhone(phone)) return {ok:false};
+    let u = this.findBy(email, phone);
+    if(!u) u = this.addUser(name, email, phone);
+    else { u.name = name; u.email = email; u.phone = phone; u.contact = email; }
+    u.runs = (u.runs|0) + 1; u.lastAt = Date.now();
+    const isBest = (entry.score|0) > (u.best|0);
+    if(isBest) u.best = entry.score|0;
+    if((entry.ledges|0) > (u.bestLedges|0)) u.bestLedges = entry.ledges|0;
+    if((entry.dist|0) > (u.bestDist|0)) u.bestDist = entry.dist|0;
+    this.saveUsers();
+    const rank = this.ranked().findIndex(x=>x.id===u.id) + 1;
+    return {ok:true, user:u, isBest, rank};
+  },
+  ranked(){ return this.users.slice().sort((a,b)=>(b.best|0)-(a.best|0) || a.name.localeCompare(b.name)); },
   removeUser(id){
     this.users = this.users.filter(u=>u.id!==id); this.saveUsers();
     if(this.activeId===id) this.setActive(this.users[0]?this.users[0].id:null);
@@ -811,13 +939,22 @@ if(!Store.maps.length && Store.segs.length){
   Store.saveMaps();
 }
 
-function validContact(v){
-  const s = v.trim();
-  if(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s)) return {ok:true, kind:"email"};
-  const digits = s.replace(/[^\d]/g,"");
-  if(digits.length>=7 && digits.length<=15 && /^[\d\s().+\-]+$/.test(s)) return {ok:true, kind:"phone"};
-  return {ok:false};
+/* every field is trimmed and collapsed before it is judged or stored */
+function clean(v){ return String(v == null ? "" : v).replace(/\s+/g," ").trim(); }
+function validName(v){ const t = clean(v); return t.length >= 2 && t.length <= 40; }
+function validEmail(v){
+  const t = clean(v).toLowerCase();
+  return t.length <= 80 && /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/.test(t);
 }
+function validPhone(v){
+  const t = clean(v);
+  if(!/^\+?[\d\s().-]+$/.test(t)) return false;
+  const d = t.replace(/\D/g,"");
+  return d.length >= 7 && d.length <= 15;
+}
+function phoneKey(v){ return clean(v).replace(/\D/g,""); }
+function userEmail(u){ return u.email || (u.contact && u.contact.includes("@") ? u.contact : ""); }
+function userPhone(u){ return u.phone || (u.contact && !u.contact.includes("@") ? u.contact : ""); }
 function maskContact(c){
   if(!Store.prefs.mask) return c;
   if(c.includes("@")){ const [a,b]=c.split("@"); return a.slice(0,2)+"•••@"+b; }
@@ -1086,6 +1223,26 @@ function genSegment(index, difficulty){
   return seg;
 }
 
+/* The run opens on a hand-made pad: a wide ledge under the middle of the
+   screen, with the first real ledge already in view to aim at. */
+function openingSegment(){
+  const seg = emptySegment("opening_pad", "Opening pad");
+  const L = {}; seg.art.layers.forEach(l => L[l.name] = l.pieces);
+  const y = 448, h = NODE_H - y;
+  seg.collision.boxes.push({x:0, y, w:704, h, type:"platform"});
+  L.midground.push({sprite:"dirt", x:0, y, w:704, h});
+  L.background.push({sprite:"fern",     x:128, y:y-TILE, w:TILE, h:TILE});
+  L.background.push({sprite:"sign",     x:320, y:y-TILE, w:TILE, h:TILE});
+  L.background.push({sprite:"mushroom", x:608, y:y-TILE, w:TILE, h:TILE});
+  L.background.push({sprite:"cloud",    x:192, y:104, w:TILE*2, h:TILE});
+  L.background.push({sprite:"cloud",    x:640, y:64,  w:TILE*2, h:TILE});
+  seg.collision.boxes.push({x:896, y:320, w:128, h:TILE, type:"platform"});
+  L.midground.push({sprite:"stone", x:896, y:320, w:128, h:TILE});
+  L.background.push({sprite:"lantern", x:928, y:320-TILE, w:TILE, h:TILE});
+  seg.collision.entry = {x:512, y:y-40};
+  return seg;
+}
+
 /* segment pool: built-ins are generated once, the library holds the
    player's own exported pairs */
 const Pool = {
@@ -1095,6 +1252,7 @@ const Pool = {
   /** Pick the segment used for chain position `index`. */
   choose(index, mode){
     const custom = this.custom();
+    if(index === 0 && mode !== "custom") return (this.opening || (this.opening = openingSegment()));
     if(mode==="custom" && custom.length) return custom[index % custom.length];
     if(mode==="mixed" && custom.length && (index%3===1)) return custom[Math.floor(hash32(index)*custom.length)%custom.length];
     if(index < 2) return this.builtin[index % this.builtin.length];      // gentle opening
@@ -1209,13 +1367,19 @@ const Game = {
     chain.mode = Store.prefs.useCustom;
     chain.forced = Array.isArray(forcedSeg) ? forcedSeg.filter(Boolean) : (forcedSeg ? [forcedSeg] : []);
     chain.ensureAhead(0, NODE_W);
-    const first = chain.head.boxes.filter(b=>b.type==="platform").sort((a,b)=>a.x-b.x)[0];
-    const gx = first ? first.x + 70 : 120;
-    const gy = first ? first.y - GECKO_H/2 : 300;
+    // the entry point in the collision file decides where a run begins
+    const pads = chain.head.boxes.filter(b=>b.type==="platform"||b.type==="cling").sort((a,b)=>a.x-b.x);
+    const entry = chain.head.seg && chain.head.seg.collision.entry;
+    let pad = entry ? pads.find(b => entry.x >= b.x && entry.x <= b.x + b.w) : null;
+    let gx;
+    if(pad) gx = entry.x;
+    else { pad = pads[0]; gx = pad ? Math.min(pad.x + 70, pad.x + pad.w - 40) : 120; }
+    const gy = pad ? pad.y - GECKO_H/2 : 300;
     this.gecko = { x:gx, y:gy, vx:0, vy:0, ang:0, mode:"rest", face:"top", squash:0, blink:0 };
-    this.camX = Math.max(0, gx - 340);
+    this.camX = gx - NODE_W/2;          // gecko dead centre before the first pull
+    this.startX = gx;
     this.creep = 0; this.started = false; this.score = 0; this.ledges = 0;
-    this.maxX = gx; this.dist = 0; this.aim = null; this.lastBox = first || null;
+    this.maxX = gx; this.dist = 0; this.aim = null; this.lastBox = pad || null;
     this.parts.length = 0; this.shake = 0; this.flash = 0; this.deathWhy = "";
     this.state = "live";
   },
@@ -1242,7 +1406,8 @@ const Game = {
 
     // camera: eases onto the gecko, never rewinds, always creeping right
     if(this.started) this.creep = 0.35 + Math.min(this.ledges*0.035, 1.45);
-    const follow = Math.max(this.camX, g.x - 340);
+    const lead = this.started ? 340 : NODE_W/2;   // centred at rest, leading once flying
+    const follow = Math.max(this.camX, g.x - lead);
     this.camX = lerp(this.camX, follow, 0.10) + this.creep;
     if(g.x > this.camX + 880) this.camX = g.x - 880;
 
@@ -1250,7 +1415,7 @@ const Game = {
     chain.cull(this.camX);
 
     this.maxX = Math.max(this.maxX, g.x);
-    this.dist = Math.floor((this.maxX - 120) / TILE);
+    this.dist = Math.max(0, Math.floor((this.maxX - this.startX) / TILE));
     this.score = Math.max(0, this.ledges*25 + Math.max(0,this.dist));
 
     // particles
@@ -1309,6 +1474,7 @@ const Game = {
     if(this.state !== "live") return;
     this.state = "dead"; this.deathWhy = why; this.shake = 14;
     this.burst(this.gecko.x, this.gecko.y, "#ff6f61", 22);
+    if(Cabinet.on){ Cabinet.endRun(); return; }
     const res = Store.recordRun(this.score, this.ledges, this.dist);
     showDeath(res.isBest);
   },
@@ -1427,9 +1593,9 @@ function drawHUD(){
   const best = Store.topScore();
   ctx.textAlign = "right"; ctx.fillStyle = "#ffc24b";
   ctx.fillText("best " + best, NODE_W-20, 24);
-  const who = Store.active();
   ctx.fillStyle = "#9bc0a6";
-  ctx.fillText(who ? who.name : "no player — run not scored", NODE_W-20, 42);
+  if(Cabinet.on) ctx.fillText("cabinet", NODE_W-20, 42);
+  else { const who = Store.active(); ctx.fillText(who ? who.name : "no player — run not scored", NODE_W-20, 42); }
   ctx.textAlign = "left";
 }
 function drawDebug(){
@@ -1528,6 +1694,14 @@ requestAnimationFrame(frame);
    creeping while you hold the drag, and the pull should not drift with it. */
 function toCanvas(ev){
   const r = cv.getBoundingClientRect();
+  if(document.documentElement.classList.contains("turned")){
+    // the stage is rotated 90° clockwise, so the rect is the rotated bounding box:
+    // its width is the canvas's on-screen height and vice versa.
+    const cx = r.left + r.width/2, cy = r.top + r.height/2;
+    const dx = ev.clientX - cx, dy = ev.clientY - cy;
+    const W = r.height, H = r.width;          // css size of the un-rotated canvas
+    return { x: (W/2 + dy) * (NODE_W/W), y: (H/2 - dx) * (NODE_H/H) };
+  }
   const s = NODE_W / r.width;
   return { x:(ev.clientX - r.left)*s, y:(ev.clientY - r.top)*s };
 }
@@ -2144,7 +2318,7 @@ $("#edTest").onclick = ()=>{
     toast("Add at least one platform so the gecko has somewhere to start."); return;
   }
   go("play");
-  startRun(Ed.map.nodes.slice(Ed.slide).map(x=>JSON.parse(JSON.stringify(x))));
+  enterGame(Ed.map.nodes.slice(Ed.slide).map(x=>JSON.parse(JSON.stringify(x))));
 };
 $("#edImport").onclick = ()=>$("#edFile").click();
 $("#edFile").onchange = async e=>{
@@ -2215,7 +2389,7 @@ function fmtDate(ts){
   return d.toLocaleDateString([], {month:"short", day:"numeric"});
 }
 function renderBoard(){
-  const body = $("#boardBody"), rows = Store.users.slice().sort((a,b)=>(b.best|0)-(a.best|0) || a.name.localeCompare(b.name));
+  const body = $("#boardBody"), rows = Store.ranked();
   body.innerHTML = "";
   $("#boardEmpty").style.display = rows.length ? "none" : "block";
   $("#boardTable").style.display = rows.length ? "table" : "none";
@@ -2225,7 +2399,8 @@ function renderBoard(){
     tr.innerHTML =
       '<td class="rank">'+(i+1)+'</td>'+
       '<td><b>'+esc(u.name)+'</b>'+(u.id===Store.activeId?' <span class="pill">playing</span>':'')+'</td>'+
-      '<td>'+esc(maskContact(u.contact))+'</td>'+
+      '<td>'+esc(maskContact(userEmail(u)||"—"))+'</td>'+
+      '<td>'+esc(maskContact(userPhone(u)||"—"))+'</td>'+
       '<td class="score-cell">'+(u.best|0)+'</td>'+
       '<td>'+(u.bestLedges|0)+'</td>'+
       '<td>'+(u.runs|0)+'</td>'+
@@ -2244,22 +2419,23 @@ function renderBoard(){
 }
 $("#userForm").onsubmit = e=>{
   e.preventDefault();
-  const name = $("#uName").value.trim(), contact = $("#uContact").value.trim();
+  const name = clean($("#uName").value), email = clean($("#uEmail").value), phone = clean($("#uPhone").value);
   const err = $("#userErr");
-  if(name.length < 2){ err.textContent = "A name needs at least two characters."; return; }
-  if(!validContact(contact).ok){ err.textContent = "Enter an email like rosa@example.com, or a phone number with 7 to 15 digits."; return; }
-  if(Store.users.some(u=>u.contact.toLowerCase()===contact.toLowerCase())){ err.textContent = "That contact is already on the list."; return; }
+  if(!validName(name)){ err.textContent = "A name needs between two and forty characters."; return; }
+  if(!validEmail(email)){ err.textContent = "Enter an email like rosa@example.com."; return; }
+  if(!validPhone(phone)){ err.textContent = "Enter a phone number with 7 to 15 digits."; return; }
+  if(Store.findBy(email, phone)){ err.textContent = "Someone with that email or phone is already on the list."; return; }
   err.textContent = "";
-  const u = Store.addUser(name, contact);
+  const u = Store.addUser(name, email, phone);
   if(!Store.activeId) Store.setActive(u.id);
-  $("#uName").value = ""; $("#uContact").value = "";
-  renderBoard(); toast(name+" added.");
+  $("#uName").value = ""; $("#uEmail").value = ""; $("#uPhone").value = "";
+  renderBoard(); renderHiScores(); toast(name+" added.");
 };
 let editingId = null;
 function openEdit(id){
   const u = Store.users.find(x=>x.id===id); if(!u) return;
   editingId = id;
-  $("#eName").value = u.name; $("#eContact").value = u.contact;
+  $("#eName").value = u.name; $("#eEmail").value = userEmail(u); $("#ePhone").value = userPhone(u);
   $("#eScore").value = u.best|0; $("#eLedges").value = u.bestLedges|0;
   $("#editErr").textContent = "";
   $("#dlgEdit").showModal();
@@ -2267,19 +2443,20 @@ function openEdit(id){
 $("#editCancel").onclick = ()=>$("#dlgEdit").close();
 $("#editSave").onclick = ()=>{
   const u = Store.users.find(x=>x.id===editingId); if(!u) return;
-  const name = $("#eName").value.trim(), contact = $("#eContact").value.trim();
-  if(name.length<2){ $("#editErr").textContent = "A name needs at least two characters."; return; }
-  if(!validContact(contact).ok){ $("#editErr").textContent = "That contact does not look like an email or a phone number."; return; }
-  u.name = name; u.contact = contact;
+  const name = clean($("#eName").value), email = clean($("#eEmail").value), phone = clean($("#ePhone").value);
+  if(!validName(name)){ $("#editErr").textContent = "A name needs between two and forty characters."; return; }
+  if(!validEmail(email)){ $("#editErr").textContent = "That email does not look right."; return; }
+  if(!validPhone(phone)){ $("#editErr").textContent = "A phone number needs 7 to 15 digits."; return; }
+  u.name = name; u.email = email.toLowerCase(); u.phone = phone; u.contact = u.email;
   u.best = Math.max(0, +$("#eScore").value||0);
   u.bestLedges = Math.max(0, +$("#eLedges").value||0);
-  Store.saveUsers(); renderBoard(); $("#dlgEdit").close(); toast("Saved.");
+  Store.saveUsers(); renderBoard(); renderHiScores(); $("#dlgEdit").close(); toast("Saved.");
 };
 $("#editDelete").onclick = async ()=>{
   const u = Store.users.find(x=>x.id===editingId); if(!u) return;
   $("#dlgEdit").close();
   if(!await ask("Delete "+u.name+" and their scores from this device?", "delete player")){ $("#dlgEdit").showModal(); return; }
-  Store.removeUser(editingId); renderBoard(); toast("Player deleted.");
+  Store.removeUser(editingId); renderBoard(); renderHiScores(); toast("Player deleted.");
 };
 $("#btnMask").onclick = ()=>{
   Store.prefs.mask = !Store.prefs.mask; Store.savePrefs();
@@ -2288,9 +2465,9 @@ $("#btnMask").onclick = ()=>{
 };
 $("#btnExportUsers").onclick = async ()=>{
   if(!Store.users.length){ toast("No players to export yet."); return; }
-  const head = "name,contact,best score,best ledges,best distance,runs,last run\n";
-  const rows = Store.users.slice().sort((a,b)=>(b.best|0)-(a.best|0)).map(u =>
-    [u.name,u.contact,u.best|0,u.bestLedges|0,u.bestDist|0,u.runs|0,u.lastAt?new Date(u.lastAt).toISOString():""]
+  const head = "name,email,phone,best score,best ledges,best distance,runs,last run\n";
+  const rows = Store.ranked().map(u =>
+    [u.name,userEmail(u),userPhone(u),u.best|0,u.bestLedges|0,u.bestDist|0,u.runs|0,u.lastAt?new Date(u.lastAt).toISOString():""]
       .map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\n");
   await saveFile("stickyfoot-players.csv", head+rows);
 };
@@ -2320,12 +2497,248 @@ function openPicker(){
 $("#pickCancel").onclick = ()=>$("#dlgPlayer").close();
 $("#pickOk").onclick = ()=>{ Store.setActive($("#pickUser").value); $("#dlgPlayer").close(); renderBoard(); };
 
+/* ---- the game view: chrome out of the way, stage on black ---- */
+function isImmersive(){ return $("#stageFill").classList.contains("immersive"); }
+function isFull(){ return !!(document.fullscreenElement || document.webkitFullscreenElement); }
+function setImmersive(on){
+  $("#stageFill").classList.toggle("immersive", on);
+  $(".cabinet").classList.toggle("ingame", on);
+  document.body.classList.toggle("ingame", on);
+  if(!on) unlockOrientation();
+  syncHud(); syncTurn();
+}
+const portraitQ = (window.matchMedia ? window.matchMedia("(orientation: portrait)")
+                                     : {matches:false, addEventListener(){}, addListener(){}});
+/* Android and friends can actually turn the screen; everywhere else we turn the stage. */
+async function lockLandscape(){
+  try{
+    if(typeof screen !== "undefined" && screen.orientation && screen.orientation.lock)
+      await screen.orientation.lock("landscape");
+  }catch(e){ /* refused or unsupported — syncTurn covers it */ }
+  syncTurn();
+}
+function unlockOrientation(){
+  try{ if(typeof screen !== "undefined" && screen.orientation && screen.orientation.unlock) screen.orientation.unlock(); }
+  catch(e){}
+}
+function syncTurn(){
+  const active = isImmersive() || isFull();
+  const turn = active && portraitQ.matches && window.innerWidth < 900;
+  $("#stageFill").classList.toggle("turned", turn);
+  document.documentElement.classList.toggle("turned", turn);
+}
+if(portraitQ.addEventListener) portraitQ.addEventListener("change", syncTurn);
+else if(portraitQ.addListener) portraitQ.addListener(syncTurn);
+window.addEventListener("resize", syncTurn);
+window.addEventListener("orientationchange", ()=>setTimeout(syncTurn, 120));
+
+async function toggleFullscreen(){
+  const el = $("#stageFill");
+  if(isFull()){
+    const exit = document.exitFullscreen || document.webkitExitFullscreen;
+    unlockOrientation();
+    if(exit) try{ await exit.call(document); }catch(e){}
+    syncHud(); syncTurn(); return;
+  }
+  const req = el.requestFullscreen || el.webkitRequestFullscreen;
+  try{
+    if(!req) throw new Error("unsupported");
+    await req.call(el, {navigationUI:"hide"});
+    lockLandscape();
+  }catch(e){
+    if(!isImmersive()){
+      setImmersive(true);
+      toast("Fullscreen is blocked in this frame — filled the window instead.");
+    } else {
+      toast("Fullscreen is blocked here. Open the game in its own tab for the real thing.");
+    }
+  }
+  syncHud();
+}
+function syncHud(){
+  const full = isFull();
+  $("#btnFull").textContent = full ? "▣" : "⛶";
+  $("#btnFull").title = (full ? "leave fullscreen" : "fullscreen") + " (F)";
+  $("#btnFullDeck").textContent = full ? "leave fullscreen" : "fullscreen";
+  $("#btnMenu").hidden = !(Game.state === "live" || Game.state === "paused");
+  $("#btnPower").hidden = !Cabinet.on;
+  $("#btnQuit").textContent = Cabinet.on ? "shut down" : "leave game";
+  $("#btnMenuPlayer").hidden = Cabinet.on;
+  $("#btnMenuBoard").hidden = Cabinet.on;
+}
+document.addEventListener("fullscreenchange", ()=>{
+  // leaving fullscreen mid-run keeps the game view; leaving it in the lobby returns the chrome
+  if(!isFull()){
+    unlockOrientation();
+    if(Cabinet.on) toast("Fullscreen closed — press ⛶ to restore it. The cabinet is still running.");
+    else if(!Game.gecko) setImmersive(false);
+  }
+  syncHud(); syncTurn();
+});
+document.addEventListener("webkitfullscreenchange", syncHud);
+
+/* ---- arcade cabinet mode ----
+   Launched deliberately, left deliberately. No page chrome, no back button,
+   no way out but the power switch. */
+const Cabinet = {
+  on:false, guard:false, timer:0, pending:null,
+  async start(){
+    if(this.on) return;
+    this.on = true;
+    document.body.classList.add("cabinet-mode");
+    go("play");
+    setImmersive(true);
+    const el = $("#stageFill");
+    const req = el.requestFullscreen || el.webkitRequestFullscreen;
+    try{
+      if(!req) throw new Error("unsupported");
+      await req.call(el, {navigationUI:"hide"});
+      lockLandscape();
+    }catch(e){ toast("Fullscreen is blocked in this frame — running filled instead."); }
+    this.armGuards();
+    this.attract();
+    syncHud();
+  },
+  async stop(){
+    if(!await ask("Shut the cabinet down and go back to the dashboard?", "shut down")) return;
+    this.on = false; this.pending = null;
+    clearInterval(this.timer);
+    document.body.classList.remove("cabinet-mode");
+    $("#ovScore").hidden = true;
+    $("#ovStart").classList.remove("cabinet");
+    exitGame();
+  },
+  armGuards(){
+    if(this.guard) return;
+    this.guard = true;
+    try{ history.pushState({stickyfoot:"cabinet"}, ""); }catch(e){}
+    window.addEventListener("popstate", ()=>{
+      if(!this.on) return;
+      try{ history.pushState({stickyfoot:"cabinet"}, ""); }catch(e){}
+      toast("The cabinet is running. Use the ⏻ button to shut it down.");
+    });
+    window.addEventListener("beforeunload", e=>{
+      if(!this.on) return;
+      e.preventDefault(); e.returnValue = "";
+    });
+  },
+  /* attract screen: high scores and one button */
+  attract(){
+    clearInterval(this.timer);
+    this.pending = null;
+    Game.state = "ready"; Game.gecko = null; Game.aim = null;
+    chain.reset();
+    hideOverlays();
+    renderHiScores();
+    $("#ovStart").classList.add("cabinet");
+    $("#ovStart").hidden = false;
+    syncHud();
+  },
+  endRun(){
+    this.pending = { score:Game.score, ledges:Game.ledges, dist:Game.dist };
+    $("#scoreValue").textContent = Game.score;
+    $("#sName").value = ""; $("#sEmail").value = ""; $("#sPhone").value = "";
+    $("#scoreErr").textContent = "";
+    $$("#ovScore input").forEach(i=>i.classList.remove("bad"));
+    hideOverlays();
+    $("#ovScore").hidden = false;
+    syncHud();
+    this.left = 90;
+    clearInterval(this.timer);
+    this.timer = setInterval(()=>{
+      this.left--;
+      $("#scoreTimer").textContent = "discarded in " + this.left + "s";
+      if(this.left <= 0){ clearInterval(this.timer); this.discard(true); }
+    }, 1000);
+    $("#scoreTimer").textContent = "discarded in " + this.left + "s";
+    setTimeout(()=>{ try{ $("#sName").focus(); }catch(e){} }, 60);
+  },
+  submit(){
+    if(!this.pending) return;
+    const name = clean($("#sName").value), email = clean($("#sEmail").value), phone = clean($("#sPhone").value);
+    const bad = [];
+    $("#sName").classList.toggle("bad", !validName(name));   if(!validName(name)) bad.push("a name of at least two characters");
+    $("#sEmail").classList.toggle("bad", !validEmail(email)); if(!validEmail(email)) bad.push("a valid email");
+    $("#sPhone").classList.toggle("bad", !validPhone(phone)); if(!validPhone(phone)) bad.push("a phone number of 7 to 15 digits");
+    if(bad.length){
+      $("#scoreErr").textContent = "The score is only kept with " + bad.join(", ") + ".";
+      return;
+    }
+    const res = Store.saveScore({name, email, phone, score:this.pending.score,
+                                 ledges:this.pending.ledges, dist:this.pending.dist});
+    clearInterval(this.timer);
+    if(!res.ok){ $("#scoreErr").textContent = "Those details were rejected, so the score was discarded."; this.attract(); return; }
+    renderBoard();
+    toast(res.isBest ? (res.user.name + " — new personal best, rank " + res.rank)
+                     : (res.user.name + " saved at rank " + res.rank));
+    this.attract();
+  },
+  discard(bySeconds){
+    clearInterval(this.timer);
+    this.pending = null;   // nothing is written
+    if(bySeconds) toast("No details entered — that score was discarded.");
+    this.attract();
+  }
+};
+function renderHiScores(){
+  const host = $("#attractScores");
+  const rows = Store.ranked().filter(u=>(u.best|0) > 0).slice(0, 8);
+  let html = '<h3>high scores</h3>';
+  if(!rows.length) html += '<p class="hs-empty">No scores yet. The board is yours.</p>';
+  else html += rows.map((u,i)=>
+    '<div class="hs-row"><span class="hs-rank">' + (i+1) + '</span>' +
+    '<span class="hs-name">' + esc(u.name) + '</span>' +
+    '<span class="hs-score">' + (u.best|0) + '</span></div>').join("");
+  host.innerHTML = html;
+}
+$("#btnRunGame").onclick = ()=>{
+  try{ Cabinet.start(); }
+  catch(err){ Cabinet.on = false; toast("The cabinet could not start: " + err.message); }
+};
+$("#btnPower").onclick = ()=>Cabinet.stop();
+$("#btnScoreSave").onclick = ()=>Cabinet.submit();
+$("#btnScoreSkip").onclick = ()=>Cabinet.discard(false);
+$$("#ovScore input").forEach(inp=>{
+  inp.addEventListener("keydown", ev=>{ if(ev.key==="Enter"){ Cabinet.submit(); ev.preventDefault(); } });
+  inp.addEventListener("input", ()=>{
+    inp.classList.remove("bad");
+    if(Cabinet.pending) Cabinet.left = Math.max(Cabinet.left|0, 45);   // don't rush someone typing
+  });
+});
+
 /* ---- run control ---- */
-function hideOverlays(){ $("#ovStart").hidden = true; $("#ovDead").hidden = true; $("#ovPause").hidden = true; }
+function hideOverlays(){ ["#ovStart","#ovDead","#ovPause","#ovScore"].forEach(k=>$(k).hidden = true); }
+function enterGame(forced){
+  setImmersive(true);
+  startRun(forced);
+}
+function exitGame(){
+  if(Cabinet.on){ Cabinet.stop(); return; }   // only the power switch leaves
+  Game.state = "ready"; Game.gecko = null; Game.aim = null;
+  chain.reset();
+  hideOverlays();
+  $("#ovStart").hidden = false;
+  if(isFull() && document.exitFullscreen) try{ document.exitFullscreen(); }catch(e){}
+  setImmersive(false);
+  paintChip(); syncHud();
+}
+function openMenu(){
+  if(Game.state !== "live") return;
+  Game.state = "paused";
+  $("#pauseScore").textContent = Game.score;
+  $("#pauseLedges").textContent = Game.ledges;
+  const u = Store.active();
+  $("#pauseWho").textContent = u ? u.name : "none";
+  $("#ovPause").hidden = false; syncHud();
+}
+function closeMenu(){
+  if(Game.state !== "paused") return;
+  $("#ovPause").hidden = true; Game.state = "live"; syncHud();
+}
 function startRun(forcedSeg){
   hideOverlays();
   Game.reset(forcedSeg || null);
-  cv.focus();
+  syncHud();
 }
 function showDeath(isBest){
   $("#deadWhy").textContent = Game.deathWhy;
@@ -2337,13 +2750,22 @@ function showDeath(isBest){
   $("#deadNote").textContent = !u ? "No player is active, so this run was not scored."
     : (isBest ? "New personal best." : "");
   $("#ovDead").hidden = false;
-  renderBoard();
+  syncHud();
+  renderBoard(); renderHiScores();
 }
-$("#btnPlay").onclick = ()=>startRun();
+$("#btnPlay").onclick = ()=>{ if(Cabinet.on) startRun(); else enterGame(); };
 $("#btnAgain").onclick = ()=>startRun();
-$("#btnToBoard").onclick = ()=>go("players");
-$("#btnResume").onclick = ()=>{ $("#ovPause").hidden = true; Game.state = "live"; };
-$("#btnQuit").onclick = ()=>{ $("#ovPause").hidden = true; Game.state = "ready"; Game.gecko = null; $("#ovStart").hidden = false; paintChip(); };
+$("#btnToBoard").onclick = ()=>{ exitGame(); go("players"); };
+$("#btnDeadExit").onclick = ()=>exitGame();
+$("#btnResume").onclick = closeMenu;
+$("#btnRestart").onclick = ()=>startRun();
+$("#btnMenuPlayer").onclick = openPicker;
+$("#btnMenuBoard").onclick = ()=>{ exitGame(); go("players"); };
+$("#btnMenuFull").onclick = toggleFullscreen;
+$("#btnQuit").onclick = exitGame;
+$("#btnMenu").onclick = ()=>{ Game.state === "paused" ? closeMenu() : openMenu(); };
+$("#btnFull").onclick = toggleFullscreen;
+$("#btnFullDeck").onclick = toggleFullscreen;
 $("#btnDebug").onclick = ()=>{ Game.debug = !Game.debug; };
 function refreshWorldButton(){
   const n = Pool.custom().length;
@@ -2363,28 +2785,39 @@ document.addEventListener("keydown", ev=>{
   if(ev.target.tagName==="INPUT" || ev.target.tagName==="SELECT") return;
   if(ev.key==="F3"){ Game.debug = !Game.debug; ev.preventDefault(); }
   if(ev.key==="r" || ev.key==="R"){ if(Game.state!=="ready") startRun(); }
-  if(ev.key==="p" || ev.key==="P"){
-    if(Game.state==="live"){ Game.state="paused"; $("#ovPause").hidden=false; }
-    else if(Game.state==="paused"){ Game.state="live"; $("#ovPause").hidden=true; }
+  if(ev.key==="f" || ev.key==="F"){ toggleFullscreen(); ev.preventDefault(); }
+  if(ev.key==="p" || ev.key==="P"){ Game.state==="paused" ? closeMenu() : openMenu(); }
+  if(ev.key==="Escape"){
+    if(Game.state==="live") openMenu();
+    else if(Game.state==="paused") closeMenu();
+    else if(isImmersive() && !isFull()) setImmersive(false);
   }
-  if(ev.key===" " && Game.state==="ready"){ startRun(); ev.preventDefault(); }
+  if(ev.key===" " && Game.state==="ready"){ enterGame(); ev.preventDefault(); }
 });
 
 /* ---------- 8. router + boot ---------- */
 function go(name){
+  if(!name || !$("#screen-"+name)) return;
+  if(Cabinet.on && name !== "play"){ toast("Shut the cabinet down first."); return; }
   $$(".screen").forEach(s=>s.classList.toggle("on", s.id==="screen-"+name));
   $$(".nav-btn").forEach(b=>{
     if(b.dataset.go===name) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current");
   });
   if(name==="players") renderBoard();
   if(name==="editor"){ edBuildLayers(); edBuildPalette(); edBuildSegList(); filmRender(); edSyncFields(); edPaint(); }
-  if(name!=="play" && Game.state==="live"){ Game.state="paused"; $("#ovPause").hidden=false; }
+  if(name!=="play" && !Cabinet.on){
+    if(Game.state==="live") openMenu();
+    if(isFull() && document.exitFullscreen) try{ document.exitFullscreen(); }catch(e){}
+    setImmersive(false);
+  }
   window.scrollTo({top:0});
 }
-$$(".nav-btn").forEach(b=> b.onclick = ()=>go(b.dataset.go));
+$$(".nav-btn[data-go]").forEach(b=> b.onclick = ()=>go(b.dataset.go));
 
 Pool.init();
+syncHud();
 paintChip();
+renderHiScores();
 renderBoard();
 refreshWorldButton();
 $("#btnMask").textContent = Store.prefs.mask ? "show contact details" : "hide contact details";

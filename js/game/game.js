@@ -161,6 +161,7 @@ const Game = {
           const w = foodWeight(t.kind);
           this.food += w; this.eaten++;
           this.pops.push({x:t.x + t.w/2, y:t.y + t.h/2, text:"+"+w, life:46});
+          Sfx("eat", {rate: 1 + Math.min(0.5, this.eaten*0.03)});   // rises through a cluster
           this.burst(t.x + t.w/2, t.y + t.h/2, "#ffc24b", 8);
         }
       }
@@ -181,13 +182,16 @@ const Game = {
       if(ox < oy){
         g.x += fromLeft ? -ox : ox;
         if(b.type === "cling"){ this.stick(b, fromLeft ? "left" : "right"); return; }
-        if(b.type === "bounce"){ g.vx = -g.vx*0.8; }
-        else { g.vx = 0; g.vy *= 0.92; }
+        if(b.type === "bounce"){ g.vx = -g.vx*0.8; Sfx("bounce"); }
+        else {
+          if(Math.abs(g.vx) > 9) Sfx("hurt", {gain:0.6});   // a solid knock, not fatal
+          g.vx = 0; g.vy *= 0.92;
+        }
       } else {
         g.y += fromTop ? -oy : oy;
         if(b.type === "cling"){ this.stick(b, fromTop ? "top" : "bottom"); return; }
         if(b.type === "bounce"){ g.vy = -Math.abs(g.vy)*0.82; if(Math.abs(g.vy)<5) g.vy=-9;
-          this.burst(g.x, b.y, "#b477e0"); return; }
+          this.burst(g.x, b.y, "#b477e0"); Sfx("bounce"); return; }
         if(fromTop && g.vy >= 0){ this.stick(b, "top"); return; }
         g.vy = Math.abs(g.vy)*0.3;
       }
@@ -201,6 +205,7 @@ const Game = {
     if(face==="left")   { g.x = box.x - PHYS.geckoWidth/2; g.ang = 0; }
     if(face==="right")  { g.x = box.x + box.w + PHYS.geckoWidth/2; g.ang = 0; }
     this.burst(g.x, g.y + PHYS.geckoHeight/2, face==="top" ? "#c8b08a" : "#ffc24b");
+    Sfx(face === "top" ? "land" : "cling");
     if(box !== this.lastBox){
       this.lastBox = box; this.ledges++; this.flash = 6;
     }
@@ -208,6 +213,7 @@ const Game = {
   die(why){
     if(this.state !== "live") return;
     this.state = "dead"; this.deathWhy = why; this.shake = 14;
+    Sfx("die");
     this.burst(this.gecko.x, this.gecko.y, "#ff6f61", 22);
     if(Cabinet.on){ Cabinet.endRun(); return; }
     const res = Store.recordRun(this.score, this.ledges, this.dist);
@@ -232,6 +238,7 @@ const Game = {
     g.vy = ny * power * PHYS.maxLaunchSpeed;
     g.mode = "fly"; this.started = true;
     this.burst(g.x, g.y, "#a5ef65", 9);
+    Sfx("launch", {rate: 0.85 + power*0.4});
     return true;
   },
   previewSteps(){ return Math.max(AIM.minPreviewSteps, AIM.previewSteps - this.ledges*AIM.previewFalloffPerLedge); }

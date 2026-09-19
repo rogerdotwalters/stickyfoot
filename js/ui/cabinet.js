@@ -56,6 +56,8 @@ const Cabinet = {
     renderHiScores();
     $("#ovStart").classList.add("cabinet");
     $("#ovStart").hidden = false;
+    Music.duck(false);
+    Music.play(S.audio.musicScene.menu);
     syncHud();
   },
   endRun(){
@@ -93,6 +95,7 @@ const Cabinet = {
     clearInterval(this.timer);
     if(!res.ok){ $("#scoreErr").textContent = "Those details were rejected, so the score was discarded."; this.attract(); return; }
     renderBoard();
+    Sfx("fanfare");
     toast(res.isBest ? (res.user.name + " — new personal best, rank " + res.rank)
                      : (res.user.name + " saved at rank " + res.rank));
     this.attract();

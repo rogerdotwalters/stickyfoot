@@ -30,6 +30,11 @@ js/art/sprites.js      registry, loader, drawPiece
 js/art/biomes.js       block categories, biome tables, applyBiome
 js/art/custom.js       player-imported PNGs, embedding, starter templates
 
+js/audio/manifest.js   the sound effect list
+js/audio/audio-data.js GENERATED: inlined WAVs (written for dev too)
+js/audio/audio.js      context, three-stage mixer, loading, playback
+js/audio/music.js      step sequencer and the two tracks, as data
+
 js/level/format.js     the two-file format and its validation
 js/level/generate.js   procedural author, opening pad, segment pool
 js/level/node.js       LevelNode + NodeChain (the linked list and its cleanup)
@@ -44,6 +49,7 @@ js/editor/biome-ui.js  biome dropdown, apply-to-map, the new-biome form
 js/editor/io.js        downloads, exports, imports, the copy-out dialog
 
 js/ui/players.js       contact validation, leaderboard, confirm dialog
+js/ui/audio-ui.js      the sound dialog and the delegated click sound
 js/ui/view.js          immersive view, fullscreen, phone orientation
 js/ui/cabinet.js       arcade mode: attract, lock-in, score entry
 js/ui/run.js           start/pause/end a run, buttons and keys
@@ -99,6 +105,13 @@ files stand alone. Collision never looks at any of this.
 **Enemies** are per-node state like tokens. `Game.anchorEnemy()` resolves patrol
 bounds once from the platform underneath, `moveEnemies()` walks and flips, and
 `touchEnemies()` ends the run. No pathfinding, no player awareness, by design.
+
+**Audio** is two halves: sampled effects (files in `assets/audio/`, decoded
+into buffers) and synthesised music (oscillators driven by a lookahead
+scheduler, patterns as plain arrays in `music.js`). Both feed a three-gain
+mixer. Nothing is constructed until a user gesture, and every entry point is a
+no-op when there is no context, so the rest of the codebase can call `Sfx()`
+without guarding.
 
 **Food tokens** live in the collision file as a `tokens` array, become per-node
 state in `LevelNode` (so a repeated segment is restocked), and are checked every

@@ -54,3 +54,9 @@ dialog::backdrop{background:rgba(4,10,7,.72)}
 #jsonText{width:100%;min-height:210px;background:var(--panel-2);border:2px solid var(--edge);
   color:var(--text);font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:11.5px;
   line-height:1.45;padding:8px;resize:vertical;white-space:pre}
+
+/* sound dialog */
+.vol-row{display:grid;grid-template-columns:72px 1fr 44px;align-items:center;gap:10px;margin-bottom:9px}
+.vol-row label{margin:0;font-family:Silkscreen,monospace;font-size:10px;color:var(--muted)}
+.vol-row output{font-family:Silkscreen,monospace;font-size:11px;color:var(--lime);text-align:right}
+.vol-row input[type=range]{width:100%;accent-color:var(--lime)}

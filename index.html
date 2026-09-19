@@ -20,6 +20,7 @@
       <span class="name">Stickyfoot</span>
       <span class="tag">slingshot gecko, endless ledges</span>
     </div>
+    <button class="nav-btn" id="btnAudio" title="sound settings">▶ sound</button>
     <button class="player-chip" id="playerChip" title="Change player">🦎 <span id="chipName" class="none">no player</span></button>
     <button class="nav-btn run" id="btnRunGame">▶ run game</button>
     <nav>
@@ -90,6 +91,7 @@
         <div class="row">
           <button class="key ghost" id="btnMenuPlayer">change player</button>
           <button class="key ghost" id="btnMenuBoard">leaderboard</button>
+          <button class="key ghost" id="btnMenuSound">sound</button>
           <button class="key ghost" id="btnMenuFull">fullscreen</button>
           <button class="key ghost" id="btnQuit">leave game</button>
         </div>
@@ -399,7 +401,8 @@ js/art/   manifest (the sprite list) · sprites · biomes · custom (imports)
 js/level/ format (the two files) · generate (procedural) · node (the chain)
 js/game/  game (physics) · render (drawing) · input (slingshot)
 js/editor/editor · filmstrip · biome-ui · io (export and import)
-js/ui/    players · view (fullscreen) · cabinet · run
+js/audio/ manifest (the sfx list) · audio (engine) · music (sequencer)
+js/ui/    players · audio-ui · view (fullscreen) · cabinet · run
 js/main.js              router and boot
 assets/sprites/*.png    every sprite, as actual files
 build.py                inlines all of the above into dist/stickyfoot.html</code></pre>
@@ -408,6 +411,14 @@ build.py                inlines all of the above into dist/stickyfoot.html</code
       <p>Every tunable number lives in one file at the root — food weights, camera height and deadzone, gravity, launch speed, drag limit, the gecko's collision box, scoring, the difficulty ramp, the cabinet's entry timer. <code>build.py</code> turns it into <code>js/core/settings.js</code>, and <code>js/core/constants.js</code> holds live references into it, so code reads <code>PHYS.gravity</code> and <code>FOOD.weights</code> rather than copying values into constants.</p>
       <p>Served over http(s) the game also re-reads <code>settings.json</code> at boot, so editing it and reloading is enough while you work — no rebuild. From <code>file://</code>, and in the built single page, the baked-in copy is used instead, which is the same data. The one exception is anything under <code>world</code>: node size, tile size and the art pixel scale are part of the segment file format, so those need <code>python3 build.py</code> and invalidate segments authored at the old size.</p>
 
+      <h2>Sound</h2>
+      <p>Two halves. The effects are real files — ten short 8-bit WAVs in <code>assets/audio/</code>, listed in <code>js/audio/manifest.js</code>, a few kilobytes each. Replace any of them with your own and nothing else has to change; <code>python3 tools/make-sfx.py</code> regenerates the sample set if you want to start from the recipes instead.</p>
+      <pre><code>{ id:"launch", file:"launch.wav", gain:0.9, vary:0.12 }</code></pre>
+      <p><code>gain</code> trims a sound without re-rendering it, and <code>vary</code> is a random pitch spread so a sound repeated ten times in a row does not turn into a machine gun.</p>
+      <p>The music is not a file. It is a small step sequencer in <code>js/audio/music.js</code> driving oscillators from patterns you can read and edit — a tempo, a root note, a chord walk, and sixteen steps each of bass, lead and hat. That is why two looping tracks cost about a hundred lines instead of a megabyte. <b>Terrarium</b> plays in the menus and on the attract screen, <b>Stickyfoot</b> during a run, and the music ducks rather than stops when you open the in-game menu.</p>
+      <p>Everything runs through three gain stages — overall, music, effects — which is exactly what the sound dialog moves. Levels save as you drag them and are kept per device; the starting values are in <code>settings.json</code> under <code>audio</code>. <kbd>M</kbd> mutes from anywhere, and the header button shows the state.</p>
+      <p>Browsers refuse to make noise until a page has been touched, so nothing is created until your first click or keypress — before that every sound call is a silent no-op. If Web Audio is missing, or a file fails to decode, the game runs silent rather than breaking. One wrinkle for development: a page opened from <code>file://</code> cannot fetch its own WAVs, so <code>build.py</code> writes the inlined copy into <code>js/audio/audio-data.js</code> for the dev tree as well.</p>
+
       <h2>Where your data lives</h2>
       <p>Players, high scores and saved segments are kept in this browser's local storage under the <code>stickyfoot.*</code> keys. Nothing is sent anywhere, and clearing the browser's site data erases it. Exported segment files are plain JSON you can keep, edit by hand, or hand to someone else to import.</p>
     </div>
@@ -415,6 +426,32 @@ build.py                inlines all of the above into dist/stickyfoot.html</code
 </div>
 
 <div class="toast" id="toast" hidden></div>
+
+<dialog id="dlgAudio">
+  <div class="dlg-head">sound</div>
+  <div class="dlg-body">
+    <div class="vol-row">
+      <label for="volMaster">overall</label>
+      <input type="range" id="volMaster" min="0" max="1" step="0.01">
+      <output id="volMasterOut">80%</output>
+    </div>
+    <div class="vol-row">
+      <label for="volMusic">music</label>
+      <input type="range" id="volMusic" min="0" max="1" step="0.01">
+      <output id="volMusicOut">45%</output>
+    </div>
+    <div class="vol-row">
+      <label for="volSfx">effects</label>
+      <input type="range" id="volSfx" min="0" max="1" step="0.01">
+      <output id="volSfxOut">85%</output>
+    </div>
+    <label style="display:flex;gap:8px;align-items:center;margin-top:10px;font-size:13.5px;color:var(--text)">
+      <input type="checkbox" id="volMute" style="width:auto"> mute everything
+    </label>
+    <p style="font-size:12.5px;color:var(--muted);margin:10px 0 0">Saved on this device as you move them. Starting levels live in <code>settings.json</code>. <kbd>M</kbd> mutes from anywhere.</p>
+  </div>
+  <div class="dlg-foot"><button class="btn primary" id="audioClose">done</button></div>
+</dialog>
 
 <dialog id="dlgBiome">
   <div class="dlg-head" id="bioHead">new biome</div>
@@ -530,6 +567,10 @@ build.py                inlines all of the above into dist/stickyfoot.html</code
 <script src="js/art/sprites.js"></script>
 <script src="js/art/custom.js"></script>
 <script src="js/art/biomes.js"></script>
+<script src="js/audio/manifest.js"></script>
+<script src="js/audio/audio-data.js"></script>
+<script src="js/audio/audio.js"></script>
+<script src="js/audio/music.js"></script>
 <script src="js/level/format.js"></script>
 <script src="js/level/generate.js"></script>
 <script src="js/level/node.js"></script>
@@ -541,6 +582,7 @@ build.py                inlines all of the above into dist/stickyfoot.html</code
 <script src="js/editor/biome-ui.js"></script>
 <script src="js/editor/io.js"></script>
 <script src="js/ui/players.js"></script>
+<script src="js/ui/audio-ui.js"></script>
 <script src="js/ui/view.js"></script>
 <script src="js/ui/cabinet.js"></script>
 <script src="js/ui/run.js"></script>

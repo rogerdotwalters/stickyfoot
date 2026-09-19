@@ -102,6 +102,17 @@ const SETTINGS = {
     "gapMaxHard": 420,
     "rampNodes": 40
   },
+  "audio": {
+    "_note": "Starting mixer levels, 0 to 1. Whatever the player sets in the sound dialog is kept in local storage and wins over these. musicScene picks the track for each part of the game; the tracks themselves are patterns in js/audio/music.js.",
+    "master": 0.8,
+    "music": 0.45,
+    "sfx": 0.85,
+    "muted": false,
+    "musicScene": {
+      "menu": "menu",
+      "run": "game"
+    }
+  },
   "cabinet": {
     "scoreEntrySeconds": 90
   }

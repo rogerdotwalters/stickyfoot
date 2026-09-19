@@ -28,9 +28,12 @@ host. Rebuild it after changes:
     js/level/               format · generate · node (the linked chain)
     js/game/                game (physics) · render · input
     js/editor/              editor · filmstrip · biome-ui · io
-    js/ui/                  players · view (fullscreen) · cabinet · run
+    js/audio/               manifest · audio (engine) · music (sequencer)
+    js/ui/                  players · audio-ui · view · cabinet · run
     js/main.js              router and boot
     assets/sprites/*.png    every sprite, as actual files
+    assets/audio/*.wav      ten sample sound effects
+    tools/make-sfx.py       regenerates those WAVs from their recipes
     examples/               the Fern Hollow map, as pairs and as one bundle
     templates/             correctly sized PNGs to paint over
     docs/ARCHITECTURE.md    what each file does, and how the node chain works
@@ -117,6 +120,22 @@ all — obstacles with a schedule. Touching one ends the run. Place them from th
 editor's **enemies** layer, which draws the ledge each one will walk; kinds and
 speeds are in `settings.json`.
 
+## Sound
+
+Effects are real WAV files in `assets/audio/`, listed in
+`js/audio/manifest.js` — launch, land, cling, eat, bounce, hurt, die, click,
+start, fanfare. Swap any of them for your own, or re-render the samples with
+`python3 tools/make-sfx.py`.
+
+Music is synthesised rather than sampled: a step sequencer in
+`js/audio/music.js` plays patterns you can edit as data. **Terrarium** in the
+menus, **Stickyfoot** during a run, ducking under the in-game menu.
+
+The sound dialog — the header button, the in-game menu, or `M` to mute — moves
+three gains: overall, music, effects. Levels save per device as you drag them;
+the starting values are in `settings.json` under `audio`. Audio only starts
+after the first click or keypress, because browsers insist.
+
 ## Settings
 
 Everything adjustable is in `settings.json`:
@@ -125,7 +144,8 @@ Everything adjustable is in `settings.json`:
 "food":   { "weights": { "fly": 10, "moth": 25, "cricket": 50, "grub": 100 } },
 "camera": { "height": 320, "deadzone": 80, "minY": -240, "maxY": 180,
             "followVertical": true, "leadX": 340 },
-"physics":{ "gravity": 0.62, "maxLaunchSpeed": 23, "maxDragPixels": 190 }
+"physics":{ "gravity": 0.62, "maxLaunchSpeed": 23, "maxDragPixels": 190 },
+"audio":  { "master": 0.8, "music": 0.45, "sfx": 0.85, "muted": false }
 ```
 
 Served over http(s), the game re-reads the file at boot — edit and reload, no

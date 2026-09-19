@@ -20,6 +20,7 @@ function go(name){
 }
 $$(".nav-btn[data-go]").forEach(b=> b.onclick = ()=>go(b.dataset.go));
 
+audioIcon();
 refreshSettings();      // settings.json, when the page is served over http(s)
 loadSprites();          // PNGs from assets/sprites (or inlined by build.py)
 Pool.init();

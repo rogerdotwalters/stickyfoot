@@ -9,6 +9,8 @@ function enterGame(forced){
 }
 function exitGame(){
   if(Cabinet.on){ Cabinet.stop(); return; }   // only the power switch leaves
+  Music.duck(false);
+  Music.play(S.audio.musicScene.menu);
   Game.state = "ready"; Game.gecko = null; Game.aim = null;
   chain.reset();
   hideOverlays();
@@ -24,14 +26,17 @@ function openMenu(){
   $("#pauseLedges").textContent = Game.ledges;
   const u = Store.active();
   $("#pauseWho").textContent = u ? u.name : "none";
-  $("#ovPause").hidden = false; syncHud();
+  $("#ovPause").hidden = false; Music.duck(true); syncHud();
 }
 function closeMenu(){
   if(Game.state !== "paused") return;
-  $("#ovPause").hidden = true; Game.state = "live"; syncHud();
+  $("#ovPause").hidden = true; Game.state = "live"; Music.duck(false); syncHud();
 }
 function startRun(forcedSeg){
   hideOverlays();
+  Sfx("start");
+  Music.duck(false);
+  Music.play(S.audio.musicScene.run);
   Game.reset(forcedSeg || null);
   syncHud();
 }
@@ -45,6 +50,8 @@ function showDeath(isBest){
   $("#deadNote").textContent = !u ? "No player is active, so this run was not scored."
     : (isBest ? "New personal best." : "");
   $("#ovDead").hidden = false;
+  Music.play(S.audio.musicScene.menu);
+  if(isBest) setTimeout(()=>Sfx("fanfare"), 420);
   syncHud();
   renderBoard(); renderHiScores();
 }
@@ -81,6 +88,7 @@ document.addEventListener("keydown", ev=>{
   if(ev.key==="F3"){ Game.debug = !Game.debug; ev.preventDefault(); }
   if(ev.key==="r" || ev.key==="R"){ if(Game.state!=="ready") startRun(); }
   if(ev.key==="f" || ev.key==="F"){ toggleFullscreen(); ev.preventDefault(); }
+  if(ev.key==="m" || ev.key==="M"){ toggleMute(); }
   if(ev.key==="p" || ev.key==="P"){ Game.state==="paused" ? closeMenu() : openMenu(); }
   if(ev.key==="Escape"){
     if(Game.state==="live") openMenu();
